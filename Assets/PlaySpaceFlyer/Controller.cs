@@ -10,8 +10,9 @@ public class Controller : MonoBehaviour
 
     public Vector3 Position { get; private set; }
     readonly public ReactiveProperty<bool> MenuPressed = new ReactiveProperty<bool>();
-    readonly public ReactiveProperty<bool> PadPressed=new ReactiveProperty<bool>();
-    readonly public ReactiveProperty<bool> GripPressed=new ReactiveProperty<bool>();
+    readonly public ReactiveProperty<bool> PadPressed = new ReactiveProperty<bool>();
+    readonly public ReactiveProperty<bool> GripPressed = new ReactiveProperty<bool>();
+    readonly public ReactiveProperty<bool> PadTouched = new ReactiveProperty<bool>();
 
     void Update()
     {
@@ -23,6 +24,7 @@ public class Controller : MonoBehaviour
             MenuPressed.Value = false;
             PadPressed.Value = false;
             GripPressed.Value = false;
+            PadTouched.Value = false;
             return;
         }
         var pose = default(TrackedDevicePose_t);
@@ -33,6 +35,7 @@ public class Controller : MonoBehaviour
         Position = transform.pos;
         MenuPressed.Value = Match(state.ulButtonPressed, EVRButtonId.k_EButton_ApplicationMenu);
         GripPressed.Value = Match(state.ulButtonPressed, EVRButtonId.k_EButton_Grip);
+        PadTouched.Value = Match(state.ulButtonTouched, EVRButtonId.k_EButton_SteamVR_Touchpad);
         PadPressed.Value = Match(state.ulButtonPressed, EVRButtonId.k_EButton_SteamVR_Touchpad);
     }
 

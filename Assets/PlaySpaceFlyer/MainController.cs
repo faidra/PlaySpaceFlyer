@@ -12,6 +12,8 @@ public class MainController : MonoBehaviour
     Controller Right;
     [SerializeField]
     DoubleGrip[] Grips;
+    [SerializeField]
+    VRCMoving Moving;
 
     [SerializeField]
     float SpeedMultiplier;
@@ -22,6 +24,7 @@ public class MainController : MonoBehaviour
 
     Vector3 currentDragOffset;
     bool useAnimation;
+    bool isMoving;
 
     void Start()
     {
@@ -36,11 +39,13 @@ public class MainController : MonoBehaviour
             .Where(grabings => grabings.All(on => on))
             .Subscribe(_ => useAnimation = !useAnimation)
             .AddTo(this);
+
+        Moving.IsMovingAsObservable().Subscribe(m => isMoving = m).AddTo(this);
     }
 
     void Update()
     {
-        var offset = Left.PadPressed.Value ? Vector3.zero : useAnimation ? currentDragOffset + AnimatedObject.transform.localPosition : currentDragOffset;
+        var offset = isMoving ? Vector3.zero : useAnimation ? currentDragOffset + AnimatedObject.transform.localPosition : currentDragOffset;
         InputEmulator.SetAllDeviceWorldPosOffset(offset);
     }
 
