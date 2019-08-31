@@ -5,9 +5,6 @@ using Valve.VR;
 
 public class InputSimulator : MonoBehaviour
 {
-    [SerializeField]
-    string CommandlineToolPath;
-
     ProcessStartInfo processStartInfo;
     VRInputEmulator inputSimulator;
 
