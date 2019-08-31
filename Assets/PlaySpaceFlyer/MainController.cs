@@ -11,6 +11,6 @@ public class MainController : MonoBehaviour
 
     void Update()
     {
-        InputSimulator.SetAllDeviceWorldPosOffset(Vector3.up * Mathf.Sin(Time.time * PhaseMultiplier) * SpeedMultiplier);
+        //InputSimulator.SetAllDeviceWorldPosOffset(Vector3.up * Mathf.Sin(Time.time * PhaseMultiplier) * SpeedMultiplier);
     }
 }
