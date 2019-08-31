@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Valve.VR;
 
-public class InputSimulator : MonoBehaviour
+public class InputEmulator : MonoBehaviour
 {
     ProcessStartInfo processStartInfo;
     VRInputEmulator inputSimulator;
+
+    public Vector3 CurrentOffset { get; private set; }
 
     void Start()
     {
@@ -41,11 +43,13 @@ public class InputSimulator : MonoBehaviour
     {
         inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
         inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, pos, true);
+        CurrentOffset = pos;
     }
 
     void DisableDeviceOffsets(uint openVRDeviceId)
     {
         inputSimulator.EnableDeviceOffsets(openVRDeviceId, false, true);
         inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, Vector3.zero, true);
+        CurrentOffset = Vector3.zero;
     }
 }

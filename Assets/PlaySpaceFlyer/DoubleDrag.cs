@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using Valve.VR;
-using System.Runtime.InteropServices;
 using UniRx;
 using UniRx.Triggers;
 using System;
@@ -11,6 +9,8 @@ public class DoubleDrag : MonoBehaviour
     Controller Controller;
     [SerializeField]
     float GraceSeconds;
+    [SerializeField]
+    InputEmulator InputEmulator;
 
     Vector3 DragStartPosition;
 
@@ -36,8 +36,8 @@ public class DoubleDrag : MonoBehaviour
     {
         return Observable.Defer(() =>
         {
-            var grabbedAt = Controller.Position;
-            return this.UpdateAsObservable().Select(_ => Controller.Position - grabbedAt);
+            var grabbedAt = Controller.Position - InputEmulator.CurrentOffset;
+            return this.UpdateAsObservable().Select(_ => Controller.Position - InputEmulator.CurrentOffset - grabbedAt);
         });
     }
 }

@@ -14,7 +14,7 @@ public class MainController : MonoBehaviour
     [SerializeField]
     float SpeedMultiplier;
     [SerializeField]
-    InputSimulator InputSimulator;
+    InputEmulator InputEmulator;
 
     Vector3 currentOffset;
 
@@ -31,7 +31,7 @@ public class MainController : MonoBehaviour
     void Update()
     {
         var offset = Left.PadPressed.Value ? Vector3.zero : currentOffset;
-        InputSimulator.SetAllDeviceWorldPosOffset(offset);
+        InputEmulator.SetAllDeviceWorldPosOffset(offset);
     }
 
     void AddOffset(Vector3 grab)
