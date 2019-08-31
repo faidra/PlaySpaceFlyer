@@ -9,6 +9,12 @@ public class InputSimulator : MonoBehaviour
     string CommandlineToolPath;
 
     ProcessStartInfo processStartInfo;
+    VRInputEmulator inputSimulator;
+
+    void Start()
+    {
+        inputSimulator = new VRInputEmulator();
+    }
 
     public void SetAllDeviceWorldPosOffset(Vector3 pos)
     {
@@ -23,6 +29,7 @@ public class InputSimulator : MonoBehaviour
     void OnDestroy()
     {
         DisableAllDeviceWorldPosOffset();
+        inputSimulator.Dispose();
     }
 
     IEnumerable<uint> GetAllOpenVRDeviceIds()
@@ -35,18 +42,13 @@ public class InputSimulator : MonoBehaviour
 
     void SetDeviceWorldPosOffset(uint openVRDeviceId, Vector3 pos)
     {
-        DeviceOffsets(openVRDeviceId.ToString(), "enable");
-        DeviceOffsets(openVRDeviceId.ToString(), "set", "worldPosOffset", pos.x.ToString(), pos.y.ToString(), pos.z.ToString());
+        inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
+        inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, pos, true);
     }
 
     void DisableDeviceOffsets(uint openVRDeviceId)
     {
-        DeviceOffsets(openVRDeviceId.ToString(), "disable");
-        DeviceOffsets(openVRDeviceId.ToString(), "set", "worldPosOffset", "0", "0", "0");
-    }
-
-    void DeviceOffsets(params string[] arguments)
-    {
-        ClientCommandline.deciveOffsets(arguments);
+        inputSimulator.EnableDeviceOffsets(openVRDeviceId, false, true);
+        inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, Vector3.zero, true);
     }
 }
