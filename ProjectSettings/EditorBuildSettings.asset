@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/PlaySpaceFlyer/Main.unity
+    guid: abd676f2fa8ad0c46857335046cc11ab
   m_configObjects: {}
