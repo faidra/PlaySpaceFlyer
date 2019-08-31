@@ -10,13 +10,18 @@ public class MainController : MonoBehaviour
     Controller Left;
     [SerializeField]
     Controller Right;
+    [SerializeField]
+    DoubleGrip[] Grips;
 
     [SerializeField]
     float SpeedMultiplier;
     [SerializeField]
     InputEmulator InputEmulator;
+    [SerializeField]
+    Transform AnimatedObject;
 
-    Vector3 currentOffset;
+    Vector3 currentDragOffset;
+    bool useAnimation;
 
     void Start()
     {
@@ -24,18 +29,23 @@ public class MainController : MonoBehaviour
 
         Observable.CombineLatest(Left.GripPressed, Right.GripPressed, (l, r) => l && r)
             .Where(on => on)
-            .Subscribe(_ => currentOffset = Vector3.zero)
+            .Subscribe(_ => currentDragOffset = Vector3.zero)
+            .AddTo(this);
+
+        Observable.CombineLatest(Grips.Select(g => g.IsDoubleGrabbingAsObservable()))
+            .Where(grabings => grabings.All(on => on))
+            .Subscribe(_ => useAnimation = !useAnimation)
             .AddTo(this);
     }
 
     void Update()
     {
-        var offset = Left.PadPressed.Value ? Vector3.zero : currentOffset;
+        var offset = Left.PadPressed.Value ? Vector3.zero : useAnimation ? currentDragOffset + AnimatedObject.transform.localPosition : currentDragOffset;
         InputEmulator.SetAllDeviceWorldPosOffset(offset);
     }
 
     void AddOffset(Vector3 grab)
     {
-        currentOffset += Vector3.up * grab.y * SpeedMultiplier * Time.deltaTime;
+        currentDragOffset += Vector3.up * grab.y * SpeedMultiplier * Time.deltaTime;
     }
 }
