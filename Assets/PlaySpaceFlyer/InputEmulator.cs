@@ -5,10 +5,12 @@ using Valve.VR;
 
 public class InputEmulator : MonoBehaviour
 {
+    public Vector3 CurrentOffset { get; private set; }
+
     ProcessStartInfo processStartInfo;
     VRInputEmulator inputSimulator;
 
-    public Vector3 CurrentOffset { get; private set; }
+    bool[] isDeviceOffsetEnabled = new bool[OpenVR.k_unMaxTrackedDeviceCount];
 
     void Start()
     {
@@ -17,12 +19,15 @@ public class InputEmulator : MonoBehaviour
 
     public void SetAllDeviceWorldPosOffset(Vector3 pos)
     {
+        if (pos == CurrentOffset) return;
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldPosOffset(id, pos);
+        CurrentOffset = pos;
     }
 
     void DisableAllDeviceWorldPosOffset()
     {
         foreach (var id in GetAllOpenVRDeviceIds()) DisableDeviceOffsets(id);
+        CurrentOffset = Vector3.zero;
     }
 
     void OnDestroy()
@@ -41,15 +46,18 @@ public class InputEmulator : MonoBehaviour
 
     void SetDeviceWorldPosOffset(uint openVRDeviceId, Vector3 pos)
     {
-        inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
+        if (!isDeviceOffsetEnabled[openVRDeviceId])
+        {
+            inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
+            isDeviceOffsetEnabled[openVRDeviceId] = true;
+        }
         inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, pos, true);
-        CurrentOffset = pos;
     }
 
     void DisableDeviceOffsets(uint openVRDeviceId)
     {
         inputSimulator.EnableDeviceOffsets(openVRDeviceId, false, true);
         inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, Vector3.zero, true);
-        CurrentOffset = Vector3.zero;
+        isDeviceOffsetEnabled[openVRDeviceId] = false;
     }
 }
