@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LeftController: {fileID: 900804353}
-  SafetySeconds: 0.2
+  SafetySeconds: 0.05
 --- !u!1 &1038218795
 GameObject:
   m_ObjectHideFlags: 0
