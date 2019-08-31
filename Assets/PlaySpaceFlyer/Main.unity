@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 113409153}
   - component: {fileID: 113409152}
   m_Layer: 0
-  m_Name: InputSimulator
+  m_Name: InputEmulator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 113409151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ae63e9e63c18654e95baea808815a45, type: 3}
+  m_Script: {fileID: 11500000, guid: 5974627b9c859af48ba0ab26fe96bcae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &113409153
@@ -288,7 +288,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 718015043}
-  GraceSeconds: 1
+  GraceSeconds: 0.5
+  InputEmulator: {fileID: 113409152}
 --- !u!1 &900804352
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +348,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 900804353}
-  GraceSeconds: 1
+  GraceSeconds: 0.5
+  InputEmulator: {fileID: 113409152}
 --- !u!1 &1038218795
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,8 +760,8 @@ MonoBehaviour:
   - {fileID: 718015045}
   Left: {fileID: 900804353}
   Right: {fileID: 718015043}
-  SpeedMultiplier: 1
-  InputSimulator: {fileID: 113409152}
+  SpeedMultiplier: 3
+  InputEmulator: {fileID: 113409152}
 --- !u!4 &1949573851
 Transform:
   m_ObjectHideFlags: 0
