@@ -11,6 +11,8 @@ namespace Valve.VR
         [PostProcessBuildAttribute(1)]
         public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
         {
+            return; // not using actions
+
             SteamVR_Input.InitializeFile();
             
             FileInfo fileInfo = new FileInfo(pathToBuiltProject);
