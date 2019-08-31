@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Valve.VR;
-using System.IO;
-using Debug = UnityEngine.Debug;
 
 public class InputSimulator : MonoBehaviour
 {
@@ -37,23 +35,18 @@ public class InputSimulator : MonoBehaviour
 
     void SetDeviceWorldPosOffset(uint openVRDeviceId, Vector3 pos)
     {
-        Execute($"deviceoffsets {openVRDeviceId} enable");
-        Execute($"deviceoffsets {openVRDeviceId} set worldPosOffset {pos.x} {pos.y} {pos.z}");
+        DeviceOffsets(openVRDeviceId.ToString(), "enable");
+        DeviceOffsets(openVRDeviceId.ToString(), "set", "worldPosOffset", pos.x.ToString(), pos.y.ToString(), pos.z.ToString());
     }
 
     void DisableDeviceOffsets(uint openVRDeviceId)
     {
-        Execute($"deviceoffsets {openVRDeviceId} disable");
-        Execute($"deviceoffsets {openVRDeviceId} set worldPosOffset 0 0 0");
+        DeviceOffsets(openVRDeviceId.ToString(), "disable");
+        DeviceOffsets(openVRDeviceId.ToString(), "set", "worldPosOffset", "0", "0", "0");
     }
 
-    void Execute(string arguments)
+    void DeviceOffsets(params string[] arguments)
     {
-        if (processStartInfo == null) processStartInfo = new ProcessStartInfo(Path.Combine(Directory.GetCurrentDirectory(), CommandlineToolPath)) { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true };
-        processStartInfo.Arguments = arguments;
-        var process = Process.Start(processStartInfo);
-        process.WaitForExit();
-        var output = process.StandardOutput.ReadToEnd();
-        if (!string.IsNullOrEmpty(output)) Debug.LogError($"{arguments}: {output}");
+        ClientCommandline.deciveOffsets(arguments);
     }
 }
