@@ -30,12 +30,12 @@ public class VRInputEmulator : IDisposable
     public void Connect() => Connect(vrInputSimulator);
     public void Disconnect() => Disconnect(vrInputSimulator);
     public void EnableDeviceOffsets(uint deviceId, bool enable, bool modal) => EnableDeviceOffsets(vrInputSimulator, deviceId, enable, modal);
-    public void SetWorldFromDriverRotationOffset(uint deviceId, Quaternion rot, bool modal = true) => SetWorldFromDriverRotationOffset(vrInputSimulator, deviceId, rot.w, rot.x, rot.y, rot.z, modal);
-    public void SetWorldFromDriverTranslationOffset(uint deviceId, Vector3 pos, bool modal = true) => SetWorldFromDriverTranslationOffset(vrInputSimulator, deviceId, pos.x, pos.y, pos.z, modal);
-    public void SetDriverFromHeadRotationOffset(uint deviceId, Quaternion rot, bool modal = true) => SetDriverFromHeadRotationOffset(vrInputSimulator, deviceId, rot.w, rot.x, rot.y, rot.z, modal);
-    public void SetDriverFromHeadTranslationOffset(uint deviceId, Vector3 pos, bool modal = true) => SetDriverFromHeadTranslationOffset(vrInputSimulator, deviceId, pos.x, pos.y, pos.z, modal);
-    public void SetDriverRotationOffset(uint deviceId, Quaternion rot, bool modal = true) => SetDriverRotationOffset(vrInputSimulator, deviceId, rot.w, rot.x, rot.y, rot.z, modal);
-    public void SetDriverTranslationOffset(uint deviceId, Vector3 pos, bool modal = true) => SetDriverTranslationOffset(vrInputSimulator, deviceId, pos.x, pos.y, pos.z, modal);
+    public void SetWorldFromDriverRotationOffset(uint deviceId, Quaternion rot, bool modal = true) => SetWorldFromDriverRotationOffset(vrInputSimulator, deviceId, rot.w, -rot.x, -rot.y, rot.z, modal);
+    public void SetWorldFromDriverTranslationOffset(uint deviceId, Vector3 pos, bool modal = true) => SetWorldFromDriverTranslationOffset(vrInputSimulator, deviceId, pos.x, pos.y, -pos.z, modal);
+    public void SetDriverFromHeadRotationOffset(uint deviceId, Quaternion rot, bool modal = true) => SetDriverFromHeadRotationOffset(vrInputSimulator, deviceId, rot.w, -rot.x, -rot.y, rot.z, modal);
+    public void SetDriverFromHeadTranslationOffset(uint deviceId, Vector3 pos, bool modal = true) => SetDriverFromHeadTranslationOffset(vrInputSimulator, deviceId, pos.x, pos.y, -pos.z, modal);
+    public void SetDriverRotationOffset(uint deviceId, Quaternion rot, bool modal = true) => SetDriverRotationOffset(vrInputSimulator, deviceId, rot.w, -rot.x, -rot.y, rot.z, modal);
+    public void SetDriverTranslationOffset(uint deviceId, Vector3 pos, bool modal = true) => SetDriverTranslationOffset(vrInputSimulator, deviceId, pos.x, pos.y, -pos.z, modal);
 
     #region DLL
     const string dllName = "libvrinputemulator";
