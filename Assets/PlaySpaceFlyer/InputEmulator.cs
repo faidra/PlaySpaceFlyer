@@ -6,6 +6,7 @@ using Valve.VR;
 public class InputEmulator : MonoBehaviour
 {
     public Vector3 CurrentOffset { get; private set; }
+    public Quaternion CurrentRotation { get; private set; }
 
     ProcessStartInfo processStartInfo;
     VRInputEmulator inputSimulator;
@@ -22,6 +23,13 @@ public class InputEmulator : MonoBehaviour
         if (pos == CurrentOffset) return;
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldPosOffset(id, pos);
         CurrentOffset = pos;
+    }
+
+    public void SetAllDeviceWorldRotOffset(Quaternion rot)
+    {
+        if (rot == CurrentRotation) return;
+        foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldRotOffset(id, rot);
+        CurrentRotation = rot;
     }
 
     void DisableAllDeviceWorldPosOffset()
@@ -46,18 +54,30 @@ public class InputEmulator : MonoBehaviour
 
     void SetDeviceWorldPosOffset(uint openVRDeviceId, Vector3 pos)
     {
+        EnforceDeviceOffsetEnabled(openVRDeviceId);
+        inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, pos, true);
+    }
+
+    void SetDeviceWorldRotOffset(uint openVRDeviceId, Quaternion rot)
+    {
+        EnforceDeviceOffsetEnabled(openVRDeviceId);
+        inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, rot, true);
+    }
+
+    void EnforceDeviceOffsetEnabled(uint openVRDeviceId)
+    {
         if (!isDeviceOffsetEnabled[openVRDeviceId])
         {
             inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
             isDeviceOffsetEnabled[openVRDeviceId] = true;
         }
-        inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, pos, true);
     }
 
     void DisableDeviceOffsets(uint openVRDeviceId)
     {
         inputSimulator.EnableDeviceOffsets(openVRDeviceId, false, true);
         inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, Vector3.zero, true);
+        inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, Quaternion.identity, true);
         isDeviceOffsetEnabled[openVRDeviceId] = false;
     }
 }
