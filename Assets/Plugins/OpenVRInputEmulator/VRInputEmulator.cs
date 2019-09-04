@@ -39,6 +39,11 @@ public class VRInputEmulator : IDisposable
     [DllImport(dllName)] static extern void Disconnect(IntPtr instance);
     [DllImport(dllName)] static extern void DeleteVRInputEmulator(IntPtr instance);
     [DllImport(dllName)] static extern void EnableDeviceOffsets(IntPtr instance, uint deviceId, bool enable, bool modal);
-    [DllImport(dllName)] static extern void SetWorldFromDriverTranslationOffset(IntPtr instance, uint deviceId, float x, float y, float z, bool modal);
+    [DllImport(dllName)] static extern void SetWorldFromDriverRotationOffset(IntPtr instance, uint deviceId, float w, float x, float y, float z, bool modal = true);
+    [DllImport(dllName)] static extern void SetWorldFromDriverTranslationOffset(IntPtr instance, uint deviceId, float x, float y, float z, bool modal = true);
+    [DllImport(dllName)] static extern void SetDriverFromHeadRotationOffset(IntPtr instance, uint deviceId, float w, float x, float y, float z, bool modal = true);
+    [DllImport(dllName)] static extern void SetDriverFromHeadTranslationOffset(IntPtr instance, uint deviceId, float x, float y, float z, bool modal = true);
+    [DllImport(dllName)] static extern void SetDriverRotationOffset(IntPtr instance, uint deviceId, float w, float x, float y, float z, bool modal = true);
+    [DllImport(dllName)] static extern void SetDriverTranslationOffset(IntPtr instance, uint deviceId, float x, float y, float z, bool modal = true);
     #endregion
 }
