@@ -25,9 +25,11 @@ public class InputEmulator : MonoBehaviour
         CurrentOffset = pos;
     }
 
-    public void SetAllDeviceWorldRotOffset(Quaternion rot)
+    public void SetAllDeviceWorldRotOffset(Quaternion rot, Vector3 center)
     {
         if (rot == CurrentRotation) return;
+        var offset = CurrentRotation * center - rot * center;
+        SetAllDeviceWorldPosOffset(offset);
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldRotOffset(id, rot);
         CurrentRotation = rot;
     }
