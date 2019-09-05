@@ -643,8 +643,8 @@ MonoBehaviour:
   Target: {fileID: 1185084572}
   Left: {fileID: 900804355}
   HMD: {fileID: 1805358344}
-  CenterOffsetLength: 1
-  Scale: -20
+  CenterOffsetLength: 2
+  Scale: -300
   ResetEvent: {fileID: 1256772338}
 --- !u!1 &1256772337
 GameObject:
