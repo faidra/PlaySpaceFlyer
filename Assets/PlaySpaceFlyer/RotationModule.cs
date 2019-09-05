@@ -39,9 +39,10 @@ public class RotationModule : MonoBehaviour
         {
             var virtualCenter = HMD.Position + HMD.Rotation * Vector3.forward * CenterOffsetLength;
             var realCenter = InputEmulator.GetRealPosition(virtualCenter);
+            realCenter = Vector3.zero;
             var startRotation = InputEmulator.GetRealRotation(HMD.Rotation);
             return move
-                .Select(movement => HMD.Rotation * movement * Scale)
+                .Select(movement => InputEmulator.GetRealPosition(movement) * Scale)
                 .Select(movement => startRotation * Quaternion.Euler(movement.y, movement.x, 0))
                 .ForEachAsync(r => SetRotation(realCenter, r));
         });
