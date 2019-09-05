@@ -7,7 +7,7 @@ public class UpDownModule : MonoBehaviour
     [SerializeField]
     DoubleDrag[] Draggs;
     [SerializeField]
-    Controller[] Controllers;
+    ResetEvent ResetEvent;
 
     [SerializeField]
     float SpeedMultiplier;
@@ -16,11 +16,7 @@ public class UpDownModule : MonoBehaviour
     {
         Draggs.Select(d => d.MoveAsObservable()).Merge().Subscribe(AddOffset).AddTo(this);
 
-        Controllers.Select(c => c.GripPressed)
-            .CombineLatestValuesAreAllTrue()
-            .Where(on => on)
-            .Subscribe(_ => transform.localPosition = Vector3.zero)
-            .AddTo(this);
+        ResetEvent.OnResetAsObservable().Subscribe(_ => transform.localPosition = Vector3.zero).AddTo(this);
     }
 
     void AddOffset(Vector3 grab)

@@ -16,6 +16,8 @@ public class RotationModule : MonoBehaviour
     float CenterOffsetLength;
     [SerializeField]
     float Scale;
+    [SerializeField]
+    ResetEvent ResetEvent;
 
     void Start()
     {
@@ -23,6 +25,12 @@ public class RotationModule : MonoBehaviour
             .SelectMany(move => MoveToRotateAsObservable(move))
             .Subscribe()
             .AddTo(this);
+
+        ResetEvent.OnResetAsObservable().Subscribe(_ =>
+        {
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+        }).AddTo(this);
     }
 
     IObservable<Unit> MoveToRotateAsObservable(IObservable<Vector3> move)
