@@ -39,11 +39,12 @@ public class RotationModule : MonoBehaviour
         {
             var virtualCenter = HMD.Position + HMD.Rotation * Vector3.forward * CenterOffsetLength;
             var realCenter = InputEmulator.GetRealPosition(virtualCenter);
-            realCenter = Vector3.zero;
-            var startRotation = InputEmulator.GetRealRotation(HMD.Rotation);
+            realCenter *= 0;
+            var startVirtualRotation = InputEmulator.CurrentRotation;
+            var startRealRotation = Quaternion.identity;// InputEmulator.GetRealRotation(HMD.Rotation);
             return move
-                .Select(movement => InputEmulator.GetRealPosition(movement) * Scale)
-                .Select(movement => startRotation * Quaternion.Euler(movement.y, movement.x, 0))
+                .Select(movement => startRealRotation * movement * Scale)
+                .Select(movement => startVirtualRotation * Quaternion.Euler(0, movement.x, 0))
                 .ForEachAsync(r => SetRotation(realCenter, r));
         });
     }

@@ -27,7 +27,7 @@ public class MainController : MonoBehaviour
             position.y = 0;
             rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
         }
-        InputEmulator.SetAllDeviceWorldPosOffset(position);
         InputEmulator.SetAllDeviceWorldRotOffset(rotation);
+        InputEmulator.SetAllDeviceWorldPosOffset(position);
     }
 }
