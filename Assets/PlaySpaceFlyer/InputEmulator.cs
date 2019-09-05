@@ -23,6 +23,11 @@ public class InputEmulator : MonoBehaviour
         return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset);
     }
 
+    public Quaternion GetRealRotation(Quaternion virtualRawRotation)
+    {
+        return Quaternion.Inverse(CurrentRotation) * virtualRawRotation;
+    }
+
     public void SetAllDeviceWorldPosOffset(Vector3 pos)
     {
         if (pos == CurrentOffset) return;
@@ -30,11 +35,9 @@ public class InputEmulator : MonoBehaviour
         CurrentOffset = pos;
     }
 
-    public void SetAllDeviceWorldRotOffset(Quaternion rot, Vector3 center)
+    public void SetAllDeviceWorldRotOffset(Quaternion rot)
     {
         if (rot == CurrentRotation) return;
-        var offset = CurrentRotation * center - rot * center;
-        SetAllDeviceWorldPosOffset(offset);
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldRotOffset(id, rot);
         CurrentRotation = rot;
     }

@@ -21,6 +21,13 @@ public class DoubleDrag : MonoBehaviour
             .Switch();
     }
 
+    public IObservable<IObservable<Vector3>> MovesAsObservable()
+    {
+        return IsDoubleDraggingAsObservable()
+            .Where(on => on)
+            .Select(_ => DragAsObservable().TakeUntil(Controller.MenuPressed.Where(on => !on)));
+    }
+
     IObservable<bool> IsDoubleDraggingAsObservable()
     {
         return Observable.Create<bool>(observer =>

@@ -508,7 +508,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Draggs:
-  - {fileID: 900804355}
   - {fileID: 718015045}
   Controllers:
   - {fileID: 900804353}
@@ -576,7 +575,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1185084572}
   m_Father: {fileID: 1075717285}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -598,6 +598,55 @@ MonoBehaviour:
   Moving: {fileID: 900804357}
   Animator: {fileID: 1103686644}
   ParameterName: Float
+--- !u!1 &1185084571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1185084572}
+  - component: {fileID: 1185084573}
+  m_Layer: 0
+  m_Name: Rotate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1185084572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185084571}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1103686645}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1185084573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185084571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8614c7cd21bef44856fc7355810f15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InputEmulator: {fileID: 113409152}
+  Target: {fileID: 1185084572}
+  Left: {fileID: 900804355}
+  HMD: {fileID: 1805358344}
+  CenterOffsetLength: 1
+  Scale: 10
 --- !u!1 &1558693898
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,9 +1014,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Moving: {fileID: 900804357}
   InputEmulator: {fileID: 113409152}
-  Target: {fileID: 1103686645}
-  P: {fileID: 718015046}
-  HMD: {fileID: 1805358344}
+  Target: {fileID: 1185084572}
 --- !u!4 &1949573851
 Transform:
   m_ObjectHideFlags: 0
