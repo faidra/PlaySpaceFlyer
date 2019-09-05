@@ -18,6 +18,11 @@ public class InputEmulator : MonoBehaviour
         inputSimulator = new VRInputEmulator();
     }
 
+    public Vector3 GetRealPosition(Vector3 virtualRawPosition)
+    {
+        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset);
+    }
+
     public void SetAllDeviceWorldPosOffset(Vector3 pos)
     {
         if (pos == CurrentOffset) return;

@@ -36,8 +36,8 @@ public class DoubleDrag : MonoBehaviour
     {
         return Observable.Defer(() =>
         {
-            var grabbedAt = Controller.Position - InputEmulator.CurrentOffset;
-            return this.UpdateAsObservable().Select(_ => Controller.Position - InputEmulator.CurrentOffset - grabbedAt);
+            var grabbedAt = InputEmulator.GetRealPosition(Controller.Position);
+            return this.UpdateAsObservable().Select(_ => InputEmulator.GetRealPosition(Controller.Position) - grabbedAt);
         });
     }
 }

@@ -29,7 +29,7 @@ public class Controller : MonoBehaviour
         }
         var pose = default(TrackedDevicePose_t);
         var state = default(VRControllerState_t);
-        openvr.GetControllerStateWithPose(ETrackingUniverseOrigin.TrackingUniverseStanding, deviceIndex, ref state, (uint)Marshal.SizeOf<VRControllerState_t>(), ref pose);
+        openvr.GetControllerStateWithPose(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated, deviceIndex, ref state, (uint)Marshal.SizeOf<VRControllerState_t>(), ref pose);
 
         var transform = new SteamVR_Utils.RigidTransform(pose.mDeviceToAbsoluteTracking);
         Position = transform.pos;
