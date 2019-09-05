@@ -37,21 +37,21 @@ public class RotationModule : MonoBehaviour
     {
         return Observable.Defer(() =>
         {
+            var offset = Target.localPosition;
             var virtualCenter = HMD.Position + HMD.Rotation * Vector3.forward * CenterOffsetLength;
             var realCenter = InputEmulator.GetRealPosition(virtualCenter);
-            realCenter *= 0;
             var startVirtualRotation = InputEmulator.CurrentRotation;
-            var startRealRotation = Quaternion.identity;// InputEmulator.GetRealRotation(HMD.Rotation);
+            var startRealRotation = InputEmulator.GetRealRotation(HMD.Rotation);
             return move
-                .Select(movement => startRealRotation * movement * Scale)
+                .Select(movement => Quaternion.Inverse(startRealRotation) * movement * Scale)
                 .Select(movement => startVirtualRotation * Quaternion.Euler(0, movement.x, 0))
-                .ForEachAsync(r => SetRotation(realCenter, r));
+                .ForEachAsync(r => SetRotation(offset, startVirtualRotation, realCenter, r));
         });
     }
 
-    void SetRotation(Vector3 realCenterPos, Quaternion targetRotation)
+    void SetRotation(Vector3 offset, Quaternion startVirtualRotation, Vector3 realCenterPos, Quaternion targetRotation)
     {
-        Target.localPosition = realCenterPos - targetRotation * realCenterPos;
+        Target.localPosition = offset + startVirtualRotation * realCenterPos - targetRotation * realCenterPos;
         Target.localRotation = targetRotation;
     }
 }

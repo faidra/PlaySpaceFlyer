@@ -3,7 +3,7 @@ using Valve.VR;
 
 public class OpenVRInitializer : MonoBehaviour
 {
-    void Start()
+    void Awake()
     {
         var openVRError = EVRInitError.None;
 
