@@ -9,7 +9,7 @@ public class InputEmulator : MonoBehaviour
     public Vector3 CurrentOffset { get; private set; }
     public Quaternion CurrentRotation { get; private set; }
 
-    Vector3 compositorPosition;
+    Vector3 referenceBaseStationPosition;
 
     ProcessStartInfo processStartInfo;
     VRInputEmulator inputSimulator;
@@ -19,13 +19,11 @@ public class InputEmulator : MonoBehaviour
     void Start()
     {
         inputSimulator = new VRInputEmulator();
-        compositorPosition = GetCompositorPosition();
-        UnityEngine.Debug.LogError(compositorPosition);
     }
 
     public Vector3 GetRealPosition(Vector3 virtualRawPosition)
     {
-        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset);
+        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset - referenceBaseStationPosition) + referenceBaseStationPosition;
     }
 
     public Quaternion GetRealRotation(Quaternion virtualRawRotation)
@@ -46,6 +44,15 @@ public class InputEmulator : MonoBehaviour
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldRotOffset(id, rot);
         CurrentRotation = rot;
     }
+
+    public void SetReferenceBaseStation(uint deviceId)
+    {
+        OpenVR.Compositor.SetTrackingSpace(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated);
+        TrackedDevicePose_t pose = default, gamePose = default;
+        OpenVR.Compositor.GetLastPoseForTrackedDeviceIndex(deviceId, ref pose, ref gamePose);
+        referenceBaseStationPosition = SteamVR_Utils.GetPosition(pose.mDeviceToAbsoluteTracking);
+    }
+
 
     void DisableAllDeviceWorldPosOffset()
     {
@@ -94,20 +101,5 @@ public class InputEmulator : MonoBehaviour
         inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, Vector3.zero, true);
         inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, Quaternion.identity, true);
         isDeviceOffsetEnabled[openVRDeviceId] = false;
-    }
-
-    static Vector3 GetCompositorPosition()
-    {
-        OpenVR.Compositor.SetTrackingSpace(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated);
-        TrackedDevicePose_t pose = default, gamePose = default;
-        OpenVR.Compositor.GetLastPoseForTrackedDeviceIndex(GetLastTrackingReferenceDeviceId(), ref pose, ref gamePose);
-        return SteamVR_Utils.GetPosition(pose.mDeviceToAbsoluteTracking);
-    }
-
-    static uint GetLastTrackingReferenceDeviceId()
-    {
-        var indexArray = new uint[8];
-        OpenVR.System.GetSortedTrackedDeviceIndicesOfClass(ETrackedDeviceClass.TrackingReference, indexArray, 0);
-        return indexArray.Last(i => i != 0);
     }
 }

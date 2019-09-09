@@ -49,6 +49,7 @@ public class RotationModule : MonoBehaviour
         });
     }
 
+    // TODO: referenceBaseStationPositionがある時の設定
     void SetRotation(Vector3 offset, Quaternion startVirtualRotation, Vector3 realCenterPos, Quaternion targetRotation)
     {
         Target.localPosition = offset + startVirtualRotation * realCenterPos - targetRotation * realCenterPos;
