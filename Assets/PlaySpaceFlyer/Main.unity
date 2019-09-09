@@ -726,7 +726,7 @@ MonoBehaviour:
   Draggs:
   - {fileID: 718015045}
   ResetEvent: {fileID: 1256772338}
-  SpeedMultiplier: 3
+  SpeedMultiplier: 5
 --- !u!4 &1075717285
 Transform:
   m_ObjectHideFlags: 0
@@ -860,7 +860,7 @@ MonoBehaviour:
   Left: {fileID: 900804355}
   HMD: {fileID: 1805358344}
   CenterOffsetLength: 2
-  Scale: -300
+  Scale: -500
   ResetEvent: {fileID: 1256772338}
 --- !u!1 &1256772337
 GameObject:
