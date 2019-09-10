@@ -9,7 +9,7 @@ public class InputEmulator : MonoBehaviour
     public Vector3 CurrentOffset { get; private set; }
     public Quaternion CurrentRotation { get; private set; }
 
-    Vector3 referenceBaseStationPosition;
+    public Vector3 ReferenceBaseStationPosition { get; private set; }
 
     ProcessStartInfo processStartInfo;
     VRInputEmulator inputSimulator;
@@ -23,7 +23,7 @@ public class InputEmulator : MonoBehaviour
 
     public Vector3 GetRealPosition(Vector3 virtualRawPosition)
     {
-        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset - referenceBaseStationPosition) + referenceBaseStationPosition;
+        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset - ReferenceBaseStationPosition) + ReferenceBaseStationPosition;
     }
 
     public Quaternion GetRealRotation(Quaternion virtualRawRotation)
@@ -50,7 +50,7 @@ public class InputEmulator : MonoBehaviour
         OpenVR.Compositor.SetTrackingSpace(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated);
         TrackedDevicePose_t pose = default, gamePose = default;
         OpenVR.Compositor.GetLastPoseForTrackedDeviceIndex(deviceId, ref pose, ref gamePose);
-        referenceBaseStationPosition = SteamVR_Utils.GetPosition(pose.mDeviceToAbsoluteTracking);
+        ReferenceBaseStationPosition = SteamVR_Utils.GetPosition(pose.mDeviceToAbsoluteTracking);
     }
 
 
