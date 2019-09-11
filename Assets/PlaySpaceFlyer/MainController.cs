@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UniRx;
-using UnityEngine.UI;
 
 public class MainController : MonoBehaviour
 {
@@ -13,14 +12,13 @@ public class MainController : MonoBehaviour
     Transform Target;
 
     [SerializeField]
-    InputField ReferenceBaseStationId;
+    TrackingReferenceSelector TrackingReferenceSeloctor;
 
     bool isMoving;
 
     void Start()
     {
-        ReferenceBaseStationId.OnValueChangedAsObservable()
-            .Select(uint.Parse)
+        TrackingReferenceSeloctor.SelectedTrackingReferenceIdAsObservable()
             .Subscribe(InputEmulator.SetReferenceBaseStation)
             .AddTo(this);
 
