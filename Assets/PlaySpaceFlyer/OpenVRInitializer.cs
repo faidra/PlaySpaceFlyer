@@ -7,7 +7,7 @@ public class OpenVRInitializer : MonoBehaviour
     {
         var openVRError = EVRInitError.None;
 
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 120;
 
         //OpenVRの初期化
         OpenVR.Init(ref openVRError, EVRApplicationType.VRApplication_Overlay);
