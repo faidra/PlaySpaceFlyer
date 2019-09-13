@@ -17,5 +17,7 @@ public class OpenVRInitializer : MonoBehaviour
             Debug.LogError("OpenVRの初期化に失敗." + openVRError.ToString());
             return;
         }
+
+        OpenVR.Compositor.SetTrackingSpace(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated);
     }
 }
