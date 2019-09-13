@@ -16,15 +16,13 @@ public class FloatAnimationModule : MonoBehaviour
 
     void Start()
     {
-        Grips.Select(g => g.IsDoubleGrabbingAsObservable())
+        var toggle = Grips.Select(g => g.IsDoubleGrabbingAsObservable())
             .CombineLatestValuesAreAllTrue()
             .Where(on => on)
-            .Subscribe(_ => Toggle())
-            .AddTo(this);
-    }
+            .Scan((a, b) => !a);
 
-    void Toggle()
-    {
-        Animator.SetBool(ParameterName, !Animator.GetBool(ParameterName));
+        Observable.CombineLatest(toggle, Moving.IsMovingAsObservable(), (on, off) => on && !off)
+            .Subscribe(on => Animator.SetBool(ParameterName, on))
+            .AddTo(this);
     }
 }
