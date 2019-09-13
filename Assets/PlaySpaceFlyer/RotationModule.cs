@@ -13,7 +13,9 @@ public class RotationModule : MonoBehaviour
     [SerializeField]
     HMD HMD;
     [SerializeField]
-    float CenterOffsetLength;
+    float BaseHeight;
+    [SerializeField]
+    float CenterOffsetMax;
     [SerializeField]
     float Scale;
     [SerializeField]
@@ -38,7 +40,8 @@ public class RotationModule : MonoBehaviour
         return Observable.Defer(() =>
         {
             var offset = Target.localPosition;
-            var virtualCenter = HMD.Position + HMD.Rotation * Vector3.forward * CenterOffsetLength;
+            var length = Mathf.Min(BaseHeight / Mathf.Abs(Mathf.Tan(HMD.Rotation.eulerAngles.x* Mathf.Deg2Rad)), CenterOffsetMax);
+            var virtualCenter = HMD.Position + Quaternion.Euler(0, HMD.Rotation.eulerAngles.y, 0) * Vector3.forward * length;
             var realCenter = InputEmulator.GetRealPosition(virtualCenter);
             var startVirtualRotation = InputEmulator.CurrentRotation;
             var startRealRotation = InputEmulator.GetRealRotation(HMD.Rotation);
