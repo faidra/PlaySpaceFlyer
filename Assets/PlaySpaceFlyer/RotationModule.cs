@@ -47,7 +47,7 @@ public class RotationModule : MonoBehaviour
             var startRealRotation = InputEmulator.GetRealRotation(HMD.Rotation);
             return Observable.Scan(move, (a, b) => a + b * Time.deltaTime)
                 .Select(movement => Quaternion.Inverse(startRealRotation) * movement * Scale)
-                .Select(movement => startVirtualRotation * Quaternion.Euler(0, movement.x, 0))
+                .Select(movement => startVirtualRotation * Quaternion.Euler(0, movement.y, 0))
                 .ForEachAsync(r => SetRotation(offset, startVirtualRotation, realCenter, r));
         });
     }
