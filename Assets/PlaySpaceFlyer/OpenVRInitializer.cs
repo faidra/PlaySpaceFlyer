@@ -7,8 +7,7 @@ public class OpenVRInitializer : MonoBehaviour
     {
         var openVRError = EVRInitError.None;
 
-        //フレームレートを90fpsにする。(しないと無限に早くなることがある)
-        Application.targetFrameRate = 90;
+        Application.targetFrameRate = 60;
 
         //OpenVRの初期化
         OpenVR.Init(ref openVRError, EVRApplicationType.VRApplication_Overlay);
