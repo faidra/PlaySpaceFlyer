@@ -1146,7 +1146,7 @@ GameObject:
   - component: {fileID: 1075717285}
   - component: {fileID: 1075717284}
   m_Layer: 0
-  m_Name: UpDown
+  m_Name: LinearMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1161,11 +1161,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1075717283}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b93fcb013907043b553b401d05914b, type: 3}
+  m_Script: {fileID: 11500000, guid: e5683810b5107b745878dfd6686d1787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Draggs:
-  - {fileID: 718015045}
+  Drag: {fileID: 718015045}
+  Controller: {fileID: 718015043}
   ResetEvent: {fileID: 1256772338}
   SpeedMultiplier: 8
 --- !u!4 &1075717285
