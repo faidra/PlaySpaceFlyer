@@ -9,6 +9,8 @@ public class LinearMoveModule : MonoBehaviour
     Controller Controller;
     [SerializeField]
     ResetEvent ResetEvent;
+    [SerializeField]
+    InputEmulator InputEmulator;
 
     [SerializeField]
     float SpeedMultiplier;
@@ -22,7 +24,11 @@ public class LinearMoveModule : MonoBehaviour
 
     void AddOffset(Vector3 grab)
     {
-        if (!Controller.GripPressed.Value)
+        if (Controller.GripPressed.Value)
+        {
+            grab = InputEmulator.CurrentRotation * grab;
+        }
+        else
         {
             grab.x = 0f;
             grab.z = 0f;

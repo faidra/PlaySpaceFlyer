@@ -1167,6 +1167,7 @@ MonoBehaviour:
   Drag: {fileID: 718015045}
   Controller: {fileID: 718015043}
   ResetEvent: {fileID: 1256772338}
+  InputEmulator: {fileID: 113409152}
   SpeedMultiplier: 8
 --- !u!4 &1075717285
 Transform:
