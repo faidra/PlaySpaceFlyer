@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 718015043}
-  GraceSeconds: 0.7
+  GraceSeconds: 0.5
 --- !u!1 &723913461
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,7 +986,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 900804353}
-  GraceSeconds: 0.7
+  GraceSeconds: 0.5
 --- !u!114 &900804357
 MonoBehaviour:
   m_ObjectHideFlags: 0
