@@ -971,7 +971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 900804353}
-  GraceSeconds: 0.5
+  GraceSeconds: 0.25
   InputEmulator: {fileID: 113409152}
 --- !u!114 &900804356
 MonoBehaviour:
