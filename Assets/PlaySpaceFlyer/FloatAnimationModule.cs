@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Linq;
 using UniRx;
+using UnityEngine.UI;
 
 public class FloatAnimationModule : MonoBehaviour
 {
@@ -13,6 +15,15 @@ public class FloatAnimationModule : MonoBehaviour
     Animator Animator;
     [SerializeField]
     string ParameterName;
+    [SerializeField]
+    string WeightParameterName;
+    [SerializeField]
+    string speedParameterName;
+
+    [SerializeField]
+    Slider weightSlider;
+    [SerializeField]
+    Slider speedSlider;
 
     void Start()
     {
@@ -24,5 +35,18 @@ public class FloatAnimationModule : MonoBehaviour
         Observable.CombineLatest(toggle, Moving.IsMovingAsObservable(), (on, off) => on && !off)
             .Subscribe(on => Animator.SetBool(ParameterName, on))
             .AddTo(this);
+
+        weightSlider.OnValueChangedAsObservable().Subscribe(SetWeight).AddTo(this);
+        speedSlider.OnValueChangedAsObservable().Subscribe(SetSpeed).AddTo(this);
+    }
+
+    void SetWeight(float weight)
+    {
+        Animator.SetFloat(WeightParameterName, weight);
+    }
+
+    void SetSpeed(float speed)
+    {
+        Animator.SetFloat(speedParameterName, speed);
     }
 }

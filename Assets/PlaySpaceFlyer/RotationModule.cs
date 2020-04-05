@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
+using UnityEngine.UI;
 
 public class RotationModule : MonoBehaviour
 {
@@ -20,10 +21,14 @@ public class RotationModule : MonoBehaviour
     float Scale;
     [SerializeField]
     ResetEvent ResetEvent;
-
+    [SerializeField]
+    Toggle useRotate;
+    
+    
     void Start()
     {
         Left.MovesAsObservable()
+            .Where(_ => useRotate.isOn)
             .SelectMany(move => MoveToRotateAsObservable(move))
             .Subscribe()
             .AddTo(this);
