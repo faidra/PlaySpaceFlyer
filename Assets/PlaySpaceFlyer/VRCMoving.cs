@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
+using UnityEngine.UI;
 
 public class VRCMoving : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class VRCMoving : MonoBehaviour
     Controller LeftController;
     [SerializeField]
     float SafetySeconds;
+    [SerializeField]
+    Toggle vrcModeToggle;
 
     public IObservable<bool> IsMovingAsObservable()
     {
@@ -20,6 +23,7 @@ public class VRCMoving : MonoBehaviour
                     .StartWith(true))
             .Switch()
             .StartWith(false)
+            .CombineLatest(vrcModeToggle.OnValueChangedAsObservable(), (move, vrc) => move && vrc)
             .DistinctUntilChanged();
     }
 }

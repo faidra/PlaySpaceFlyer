@@ -1770,6 +1770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftController: {fileID: 900804353}
   SafetySeconds: 0.05
+  vrcModeToggle: {fileID: 1444228565}
 --- !u!1 &921104257
 GameObject:
   m_ObjectHideFlags: 0
@@ -3625,7 +3626,6 @@ MonoBehaviour:
   InputEmulator: {fileID: 113409152}
   Target: {fileID: 1185084572}
   TrackingReferenceSeloctor: {fileID: 982960611}
-  vrcModeToggle: {fileID: 1444228565}
 --- !u!4 &1949573851
 Transform:
   m_ObjectHideFlags: 0

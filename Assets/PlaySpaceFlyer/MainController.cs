@@ -14,8 +14,6 @@ public class MainController : MonoBehaviour
 
     [SerializeField]
     TrackingReferenceSelector TrackingReferenceSeloctor;
-    [SerializeField]
-    Toggle vrcModeToggle;
     
     bool isMoving;
     bool vrcMode;
@@ -33,7 +31,7 @@ public class MainController : MonoBehaviour
     {
         var position = Target.transform.position;
         var rotation = Target.transform.rotation;
-        if (isMoving && vrcModeToggle.isOn)
+        if (isMoving)
         {
             position.y = 0;
             rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
