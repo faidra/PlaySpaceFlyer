@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UniRx;
+using UnityEngine.UI;
 
 public class LinearMoveModule : MonoBehaviour
 {
@@ -14,12 +15,17 @@ public class LinearMoveModule : MonoBehaviour
 
     [SerializeField]
     float SpeedMultiplier;
+    [SerializeField]
+    Toggle resetEnabledToggle;
 
     void Start()
     {
         Drag.MoveAsObservable().Subscribe(AddOffset).AddTo(this);
 
-        ResetEvent.OnResetAsObservable().Subscribe(_ => transform.localPosition = Vector3.zero).AddTo(this);
+        ResetEvent.OnResetAsObservable()
+            .Where(_ => resetEnabledToggle.isOn)
+            .Subscribe(_ => transform.localPosition = Vector3.zero)
+            .AddTo(this);
     }
 
     void AddOffset(Vector3 grab)
