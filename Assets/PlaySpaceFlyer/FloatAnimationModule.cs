@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 using UniRx;
 using UnityEngine.UI;
@@ -32,12 +31,13 @@ public class FloatAnimationModule : MonoBehaviour
             .Where(on => on)
             .Scan((a, b) => !a);
 
-        Observable.CombineLatest(toggle, Moving.IsMovingAsObservable(), (on, off) => on && !off)
-            .Subscribe(on => Animator.SetBool(ParameterName, on))
+        toggle.Subscribe(on => Animator.SetBool(ParameterName, on))
             .AddTo(this);
 
         weightSlider.OnValueChangedAsObservable().Subscribe(SetWeight).AddTo(this);
-        speedSlider.OnValueChangedAsObservable().Subscribe(SetSpeed).AddTo(this);
+        speedSlider.OnValueChangedAsObservable()
+            .CombineLatest(Moving.IsMovingAsObservable(), (speed, isMoving) => isMoving ? 0f : speed)
+            .Subscribe(SetSpeed).AddTo(this);
     }
 
     void SetWeight(float weight)
