@@ -14,13 +14,18 @@ public class LinearMoveModule : MonoBehaviour
     InputEmulator InputEmulator;
 
     [SerializeField]
+    VRCMoving Moving;
+
+    [SerializeField]
     float SpeedMultiplier;
     [SerializeField]
     Toggle resetEnabledToggle;
 
     void Start()
     {
-        Drag.MoveAsObservable().Subscribe(AddOffset).AddTo(this);
+        Drag.MoveAsObservable()
+            .WithLatestFrom(Moving.IsMovingAsObservable(), (v, moving) => (v, moving))
+            .Subscribe(t => AddOffset(t.v, t.moving)).AddTo(this);
 
         ResetEvent.OnResetAsObservable()
             .Where(_ => resetEnabledToggle.isOn)
@@ -28,17 +33,20 @@ public class LinearMoveModule : MonoBehaviour
             .AddTo(this);
     }
 
-    void AddOffset(Vector3 grab)
+    void AddOffset(Vector3 grab, bool isMoving)
     {
         if (Controller.GripPressed.Value)
         {
+            if (isMoving) grab.y = 0f;
             grab = InputEmulator.CurrentRotation * grab;
         }
         else
         {
+            if (isMoving) return;
             grab.x = 0f;
             grab.z = 0f;
         }
+
         transform.Translate(grab * SpeedMultiplier * Time.deltaTime);
     }
 }
