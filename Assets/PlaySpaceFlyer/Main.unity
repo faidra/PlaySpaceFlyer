@@ -2324,6 +2324,7 @@ MonoBehaviour:
   Controller: {fileID: 718015043}
   ResetEvent: {fileID: 1256772338}
   InputEmulator: {fileID: 113409152}
+  Moving: {fileID: 900804357}
   SpeedMultiplier: 8
   resetEnabledToggle: {fileID: 675868701}
 --- !u!4 &1075717285
@@ -3933,7 +3934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b362209b8bf3a47b6aeb92dbbe6203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Moving: {fileID: 900804357}
   InputEmulator: {fileID: 113409152}
   Target: {fileID: 1185084572}
   TrackingReferenceSeloctor: {fileID: 982960611}
