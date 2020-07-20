@@ -37,3 +37,5 @@ sysinfo.txt
 *.unitypackage
 
 client_commandline.exe
+
+.idea/
