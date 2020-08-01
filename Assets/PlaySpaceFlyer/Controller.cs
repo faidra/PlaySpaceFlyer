@@ -27,20 +27,27 @@ public class Controller : MonoBehaviour
             PadTouched.Value = false;
             return;
         }
+
         var pose = default(TrackedDevicePose_t);
         var state = default(VRControllerState_t);
-        openvr.GetControllerStateWithPose(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated, deviceIndex, ref state, (uint)Marshal.SizeOf<VRControllerState_t>(), ref pose);
+        openvr.GetControllerStateWithPose(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated, deviceIndex, ref state, (uint) Marshal.SizeOf<VRControllerState_t>(), ref pose);
+        openvr.GetControllerState(deviceIndex, ref state, (uint) Marshal.SizeOf<VRControllerState_t>()); // なぜかknuclesで↑でstateがとれなかった
 
         var transform = new SteamVR_Utils.RigidTransform(pose.mDeviceToAbsoluteTracking);
         Position = transform.pos;
         MenuPressed.Value = Match(state.ulButtonPressed, EVRButtonId.k_EButton_ApplicationMenu);
         GripPressed.Value = Match(state.ulButtonPressed, EVRButtonId.k_EButton_Grip);
         PadTouched.Value = Match(state.ulButtonTouched, EVRButtonId.k_EButton_SteamVR_Touchpad);
-        PadPressed.Value = Match(state.ulButtonPressed, EVRButtonId.k_EButton_SteamVR_Touchpad);
+        PadPressed.Value = Match(state.ulButtonPressed, EVRButtonId.k_EButton_SteamVR_Touchpad) || HasValue(state.rAxis0);
     }
 
-    bool Match(ulong ulButtonPressed, EVRButtonId buttonId)
+    static bool Match(ulong ulButtonPressed, EVRButtonId buttonId)
     {
         return (ulButtonPressed & (1ul << (int)buttonId)) > 0;
+    }
+
+    static bool HasValue(VRControllerAxis_t axis)
+    {
+        return axis.x * axis.x + axis.y * axis.y > 0.0001f; // 触ってるとこの値が入るらしい
     }
 }
