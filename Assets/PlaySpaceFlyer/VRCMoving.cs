@@ -11,19 +11,28 @@ public class VRCMoving : MonoBehaviour
     float SafetySeconds;
     [SerializeField]
     Toggle vrcModeToggle;
+    [SerializeField]
+    bool isPad;
 
     public IObservable<bool> IsMovingAsObservable()
     {
-        return LeftController.PadPressed
-            .Where(pressed => pressed)
-            .Select(_ =>
-                LeftController.PadTouched
-                    .FirstOrDefault(touched => !touched)
-                    .Delay(TimeSpan.FromSeconds(SafetySeconds))
-                    .StartWith(true))
-            .Switch()
-            .StartWith(false)
-            .CombineLatest(vrcModeToggle.OnValueChangedAsObservable(), (move, vrc) => move && vrc)
-            .DistinctUntilChanged();
+        if (isPad)
+        {
+            return LeftController.PadPressed
+                .Where(pressed => pressed)
+                .Select(_ =>
+                    LeftController.PadTouched
+                        .FirstOrDefault(touched => !touched)
+                        .Delay(TimeSpan.FromSeconds(SafetySeconds))
+                        .StartWith(true))
+                .Switch()
+                .StartWith(false)
+                .CombineLatest(vrcModeToggle.OnValueChangedAsObservable(), (move, vrc) => move && vrc)
+                .DistinctUntilChanged();
+        }
+        else
+        {
+            return LeftController.PadPressed;
+        }
     }
 }
