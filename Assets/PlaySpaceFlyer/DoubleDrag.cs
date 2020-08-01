@@ -25,7 +25,7 @@ public class DoubleDrag : MonoBehaviour
     {
         return IsDoubleDraggingAsObservable()
             .Where(on => on)
-            .Select(_ => DragAsObservable().TakeUntil(Controller.MenuPressed.Where(on => !on)));
+            .Select(_ => DragAsObservable().TakeUntil(Controller.GripPressed.Where(on => !on)));
     }
 
     IObservable<bool> IsDoubleDraggingAsObservable()
@@ -34,8 +34,8 @@ public class DoubleDrag : MonoBehaviour
         {
             var isSeriesUntil = 0f;
             return StableCompositeDisposable.Create(
-            Controller.MenuPressed.Select(pressed => pressed && Time.time < isSeriesUntil).DistinctUntilChanged().Subscribe(observer),
-            Controller.MenuPressed.Where(pressed => pressed).Subscribe(_ => isSeriesUntil = Time.time + GraceSeconds));
+            Controller.GripPressed.Select(pressed => pressed && Time.time < isSeriesUntil).DistinctUntilChanged().Subscribe(observer),
+            Controller.GripPressed.Where(pressed => pressed).Subscribe(_ => isSeriesUntil = Time.time + GraceSeconds));
         });
     }
 

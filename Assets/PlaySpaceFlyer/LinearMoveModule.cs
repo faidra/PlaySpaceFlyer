@@ -35,7 +35,7 @@ public class LinearMoveModule : MonoBehaviour
 
     void AddOffset(Vector3 grab, bool isMoving)
     {
-        if (Controller.GripPressed.Value)
+        if (Controller.MenuPressed.Value)
         {
             if (isMoving) grab.y = 0f;
             grab = InputEmulator.CurrentRotation * grab;
