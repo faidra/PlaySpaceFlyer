@@ -41,6 +41,8 @@ public class InputEmulator : MonoBehaviour
 
     public void SetAllDeviceWorldRotOffset(Quaternion rot)
     {
+        Debug.LogError("SetRot is not implemented");
+        return;
         if (rot == CurrentRotation) return;
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldRotOffset(id, rot);
         CurrentRotation = rot;
@@ -81,8 +83,8 @@ public class InputEmulator : MonoBehaviour
 
     void SetDeviceWorldRotOffset(uint openVRDeviceId, Quaternion rot)
     {
-        EnforceDeviceOffsetEnabled(openVRDeviceId);
-        Debug.LogError("SetRot is not implemented");
+        throw new NotImplementedException();
+        // EnforceDeviceOffsetEnabled(openVRDeviceId);
         // inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, rot, true);
     }
 
