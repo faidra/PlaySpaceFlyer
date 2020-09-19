@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Valve.VR;
 using System.Linq;
+using Debug = UnityEngine.Debug;
 
 public class InputEmulator : MonoBehaviour
 {
@@ -12,13 +14,12 @@ public class InputEmulator : MonoBehaviour
     public Vector3 ReferenceBaseStationPosition { get; private set; }
 
     ProcessStartInfo processStartInfo;
-    VRInputEmulator inputSimulator;
 
     bool[] isDeviceOffsetEnabled = new bool[OpenVR.k_unMaxTrackedDeviceCount];
 
     void Start()
     {
-        inputSimulator = new VRInputEmulator();
+        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.Connect();
     }
 
     public Vector3 GetRealPosition(Vector3 virtualRawPosition)
@@ -62,7 +63,6 @@ public class InputEmulator : MonoBehaviour
     void OnDestroy()
     {
         DisableAllDeviceWorldPosOffset();
-        inputSimulator.Dispose();
     }
 
     IEnumerable<uint> GetAllOpenVRDeviceIds()
@@ -76,29 +76,28 @@ public class InputEmulator : MonoBehaviour
     void SetDeviceWorldPosOffset(uint openVRDeviceId, Vector3 pos)
     {
         EnforceDeviceOffsetEnabled(openVRDeviceId);
-        inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, pos, true);
+        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.SetDeviceOffset(openVRDeviceId, pos.x, pos.y, pos.z);
     }
 
     void SetDeviceWorldRotOffset(uint openVRDeviceId, Quaternion rot)
     {
         EnforceDeviceOffsetEnabled(openVRDeviceId);
-        inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, rot, true);
+        Debug.LogError("SetRot is not implemented");
+        // inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, rot, true);
     }
 
     void EnforceDeviceOffsetEnabled(uint openVRDeviceId)
     {
         if (!isDeviceOffsetEnabled[openVRDeviceId])
         {
-            inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
+            // inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
             isDeviceOffsetEnabled[openVRDeviceId] = true;
         }
     }
 
     void DisableDeviceOffsets(uint openVRDeviceId)
     {
-        inputSimulator.EnableDeviceOffsets(openVRDeviceId, false, true);
-        inputSimulator.SetWorldFromDriverTranslationOffset(openVRDeviceId, Vector3.zero, true);
-        inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, Quaternion.identity, true);
+        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.ResetAndDisableOffsets(openVRDeviceId);
         isDeviceOffsetEnabled[openVRDeviceId] = false;
     }
 }
