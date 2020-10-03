@@ -18,11 +18,11 @@ public class MainController : MonoBehaviour
             .AddTo(this);
     }
 
-    void Update()
+    void LateUpdate()
     {
         var position = Target.transform.position;
         var rotation = Target.transform.rotation;
-        InputEmulator.SetAllDeviceWorldRotOffset(rotation);
+        //InputEmulator.SetAllDeviceWorldRotOffset(rotation);
         InputEmulator.SetAllDeviceWorldPosOffset(position);
     }
 }

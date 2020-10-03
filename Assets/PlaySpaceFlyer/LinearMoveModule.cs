@@ -18,8 +18,6 @@ public class LinearMoveModule : MonoBehaviour
 
     [SerializeField]
     float SpeedMultiplier;
-    [SerializeField]
-    Toggle resetEnabledToggle;
 
     void Start()
     {
@@ -28,7 +26,6 @@ public class LinearMoveModule : MonoBehaviour
             .Subscribe(t => AddOffset(t.v, t.moving)).AddTo(this);
 
         ResetEvent.OnResetAsObservable()
-            .Where(_ => resetEnabledToggle.isOn)
             .Subscribe(_ => transform.localPosition = Vector3.zero)
             .AddTo(this);
     }
