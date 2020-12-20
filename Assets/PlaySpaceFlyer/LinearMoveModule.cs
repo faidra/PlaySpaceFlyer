@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UniRx;
-using UnityEngine.UI;
 
 public class LinearMoveModule : MonoBehaviour
 {
@@ -16,13 +15,16 @@ public class LinearMoveModule : MonoBehaviour
     [SerializeField]
     VRCMoving Moving;
 
+    [SerializeField] SwitchMove SwitchMove;
+
     [SerializeField]
     float SpeedMultiplier;
 
     void Start()
     {
+        var moveOrSwitch = Moving.IsMovingAsObservable().CombineLatest(SwitchMove.IsSwitchingAsObservable(), (m, s) => m || s);
         Drag.MoveAsObservable()
-            .WithLatestFrom(Moving.IsMovingAsObservable(), (v, moving) => (v, moving))
+            .WithLatestFrom(moveOrSwitch, (v, moving) => (v, moving))
             .Subscribe(t => AddOffset(t.v, t.moving)).AddTo(this);
 
         ResetEvent.OnResetAsObservable()
