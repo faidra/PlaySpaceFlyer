@@ -55,8 +55,7 @@ public class InputEmulator : MonoBehaviour
         ReferenceBaseStationPosition = new SteamVR_Utils.RigidTransform(pose.mDeviceToAbsoluteTracking).pos;
     }
 
-
-    void DisableAllDeviceWorldPosOffset()
+    public void DisableAllDeviceWorldPosOffset()
     {
         foreach (var id in GetAllOpenVRDeviceIds()) DisableDeviceOffsets(id);
         CurrentOffset = Vector3.zero;
@@ -64,6 +63,7 @@ public class InputEmulator : MonoBehaviour
 
     void OnDestroy()
     {
+        if (OpenVR.System == null) return;
         DisableAllDeviceWorldPosOffset();
     }
 

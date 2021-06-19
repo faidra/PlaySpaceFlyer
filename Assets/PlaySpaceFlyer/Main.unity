@@ -1374,7 +1374,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!224 &675868702
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4099,10 +4099,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbfb5b5269562f4b8e7c7be138426d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputSource: 9
-  pose:
-    actionPath: /actions/default/in/Pose
-    needsReinit: 0
 --- !u!4 &1805358345
 Transform:
   m_ObjectHideFlags: 0

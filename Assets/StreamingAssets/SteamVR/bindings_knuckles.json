@@ -136,24 +136,6 @@
             },
             {
                "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/canceller"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/left/input/grip"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/canceller"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/grip"
-            },
-            {
-               "inputs" : {
                   "position" : {
                      "output" : "/actions/default/in/stick"
                   }
@@ -169,6 +151,24 @@
                },
                "mode" : "joystick",
                "path" : "/user/hand/right/input/thumbstick"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/canceller"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/a"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/canceller"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/a"
             }
          ]
       },
