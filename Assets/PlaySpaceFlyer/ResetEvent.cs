@@ -17,7 +17,7 @@ public class ResetEvent : MonoBehaviour
 
     void Start()
     {
-        Controllers.Select(c => c.GripPressed)
+        Controllers.Select(c => c.CancellerPressed)
             .CombineLatestValuesAreAllTrue()
             .Where(on => on && resetEnabledToggle.isOn)
             .Subscribe(_ => _onReset.OnNext(Unit.Default))

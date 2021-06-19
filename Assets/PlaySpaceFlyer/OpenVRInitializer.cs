@@ -17,11 +17,8 @@ public class OpenVRInitializer : MonoBehaviour
         OpenVR.Init(ref openVRError, EVRApplicationType.VRApplication_Overlay);
         if (openVRError != EVRInitError.None)
         {
-            Debug.LogError("OpenVRの初期化に失敗." + openVRError.ToString());
-            yield break;
+            throw new Exception("OpenVRの初期化に失敗." + openVRError.ToString());
         }
-
-        // OpenVR.Compositor.SetTrackingSpace(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated);
 
         if (XRSettings.loadedDeviceName != "OpenVR")
         {
@@ -31,9 +28,11 @@ public class OpenVRInitializer : MonoBehaviour
         }
 
         XRSettings.enabled = true;
+        
+        SteamVR.Initialize();
 
         DontDestroyOnLoad(gameObject);
-        
+
         SceneManager.LoadScene("Main");
     }
 
@@ -43,6 +42,7 @@ public class OpenVRInitializer : MonoBehaviour
         {
             XRSettings.LoadDeviceByName("None");
         }
+        SteamVR.SafeDispose();
         XRSettings.enabled = false;
         OpenVR.Shutdown();
     }

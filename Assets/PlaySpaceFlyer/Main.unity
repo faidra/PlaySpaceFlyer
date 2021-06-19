@@ -1374,7 +1374,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!224 &675868702
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1627,7 +1627,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d27e18eec9136f438f8ecc0b46498df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ControllerRole: 2
+  inputSource: 2
+  stick:
+    actionPath: /actions/default/in/Stick
+    needsReinit: 0
+  pose:
+    actionPath: /actions/default/in/Pose
+    needsReinit: 0
+  mainButton:
+    actionPath: /actions/default/in/MainButton
+    needsReinit: 0
+  modifier:
+    actionPath: /actions/default/in/Modifier
+    needsReinit: 0
+  canceller:
+    actionPath: /actions/default/in/Canceller
+    needsReinit: 0
 --- !u!4 &718015044
 Transform:
   m_ObjectHideFlags: 0
@@ -2262,7 +2277,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d27e18eec9136f438f8ecc0b46498df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ControllerRole: 1
+  inputSource: 1
+  stick:
+    actionPath: /actions/default/in/Stick
+    needsReinit: 0
+  pose:
+    actionPath: /actions/default/in/Pose
+    needsReinit: 0
+  mainButton:
+    actionPath: /actions/default/in/MainButton
+    needsReinit: 0
+  modifier:
+    actionPath: /actions/default/in/Modifier
+    needsReinit: 0
+  canceller:
+    actionPath: /actions/default/in/Canceller
+    needsReinit: 0
 --- !u!4 &900804354
 Transform:
   m_ObjectHideFlags: 0
@@ -2319,9 +2349,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LeftController: {fileID: 900804353}
-  SafetySeconds: 0.05
-  vrcModeToggle: {fileID: 1444228565}
-  isPad: 0
 --- !u!1 &919382197
 GameObject:
   m_ObjectHideFlags: 0
@@ -4072,6 +4099,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbfb5b5269562f4b8e7c7be138426d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputSource: 9
+  pose:
+    actionPath: /actions/default/in/Pose
+    needsReinit: 0
 --- !u!4 &1805358345
 Transform:
   m_ObjectHideFlags: 0

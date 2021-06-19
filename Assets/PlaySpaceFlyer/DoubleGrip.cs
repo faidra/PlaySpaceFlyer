@@ -11,7 +11,7 @@ public class DoubleGrip : MonoBehaviour
 
     public IObservable<bool> IsDoubleGrabbingAsObservable()
     {
-        return Controller.GripPressed
+        return Controller.MainButtonPressed
             .Timestamp()
             .Buffer(3, 1)
             .Select(buffered => buffered[2].Value && (buffered[2].Timestamp - buffered[0].Timestamp < TimeSpan.FromSeconds(GraceSeconds)))

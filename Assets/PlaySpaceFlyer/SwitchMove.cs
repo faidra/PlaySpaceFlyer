@@ -12,6 +12,6 @@ public class SwitchMove : MonoBehaviour
 
     public IObservable<bool> IsSwitchingAsObservable()
     {
-        return switchMoveToggle.OnValueChangedAsObservable().CombineLatest(RightController.MenuPressed, (s, m) => s && m);
+        return switchMoveToggle.OnValueChangedAsObservable().CombineLatest(RightController.MainButtonPressed, (s, m) => s && m);
     }
 }
