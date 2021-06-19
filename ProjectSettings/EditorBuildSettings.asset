@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/PlaySpaceFlyer/Init.unity
+    guid: 208ac41bdfd8e9f4082f23663715612c
+  - enabled: 1
     path: Assets/PlaySpaceFlyer/Main.unity
     guid: abd676f2fa8ad0c46857335046cc11ab
   m_configObjects: {}
