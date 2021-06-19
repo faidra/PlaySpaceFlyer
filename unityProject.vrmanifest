@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.playspaceflyer.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "D:\\user\\Desktop\\WorkSpace\\PlaySpaceFlyer\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "PlaySpaceFlyer [Testing]"
+        }
+      }
+    }
+  ]
+}

@@ -21,7 +21,7 @@ public class OpenVRInitializer : MonoBehaviour
             yield break;
         }
 
-        OpenVR.Compositor.SetTrackingSpace(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated);
+        // OpenVR.Compositor.SetTrackingSpace(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated);
 
         if (XRSettings.loadedDeviceName != "OpenVR")
         {
