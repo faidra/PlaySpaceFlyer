@@ -33,6 +33,8 @@ public class OpenVRInitializer : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        SteamVR_Action_Pose.SetTrackingUniverseOrigin(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated); // Settingsで変えるとCompositerの書き換え合戦が発生するので
+
         SceneManager.LoadScene("Main");
     }
 
