@@ -40,7 +40,7 @@ public class InputEmulator : MonoBehaviour
     {
         TrackedDevicePose_t pose = default, gamePose = default;
         OpenVR.Compositor.GetLastPoseForTrackedDeviceIndex(deviceId, ref pose, ref gamePose);
-        ReferenceBaseStationPosition = new SteamVR_Utils.RigidTransform(pose.mDeviceToAbsoluteTracking).pos;
+        ReferenceBaseStationPosition = pose.mDeviceToAbsoluteTracking.GetPosition();
     }
 
     public void DisableAllDeviceTransform()

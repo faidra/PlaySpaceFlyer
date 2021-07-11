@@ -14,8 +14,7 @@ public class HMD : MonoBehaviour
         var state = default(VRControllerState_t);
         openvr.GetControllerStateWithPose(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated, OpenVR.k_unTrackedDeviceIndex_Hmd, ref state, (uint) Marshal.SizeOf<VRControllerState_t>(), ref pose);
 
-        var transform = new SteamVR_Utils.RigidTransform(pose.mDeviceToAbsoluteTracking);
-        Position = transform.pos;
-        Rotation = transform.rot;
+        Position = pose.mDeviceToAbsoluteTracking.GetPosition();
+        Rotation = pose.mDeviceToAbsoluteTracking.GetRotation();
     }
 }
