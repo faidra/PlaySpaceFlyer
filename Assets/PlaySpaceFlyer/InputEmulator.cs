@@ -79,8 +79,9 @@ public class InputEmulator : MonoBehaviour
         return (vec.x, vec.y, -vec.z);
     }
 
-    static (double w, double x, double y, double z) ToRHand(Quaternion rot)
+    static (double x, double y, double z, double w) ToRHand(Quaternion rot)
     {
-        return (rot.w, -rot.x, -rot.y, rot.z);
+        // 要確認
+        return (-rot.x, -rot.y, rot.z, rot.w);
     }
 }
