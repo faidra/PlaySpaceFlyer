@@ -44,20 +44,20 @@ public class RotationModule : MonoBehaviour
     {
         return Observable.Defer(() =>
         {
-            var offset = Target.localPosition;
-            var length = Mathf.Min(BaseHeight / Mathf.Abs(Mathf.Tan(HMD.Rotation.eulerAngles.x* Mathf.Deg2Rad)), CenterOffsetMax);
+            var startLocalPosition = Target.localPosition;
+            var length = Mathf.Min(BaseHeight / Mathf.Abs(Mathf.Tan(HMD.Rotation.eulerAngles.x * Mathf.Deg2Rad)), CenterOffsetMax);
             var virtualCenter = HMD.Position + Quaternion.Euler(0, HMD.Rotation.eulerAngles.y, 0) * Vector3.forward * length;
             var realCenter = InputEmulator.GetRealPosition(virtualCenter);
-            var startVirtualRotation = InputEmulator.CurrentRotation;
-            return Observable.Scan(move, Vector3.zero, (a, b) => a + b * Time.deltaTime)
-                .Select(movement => startVirtualRotation * Quaternion.Euler(0, movement.y * Scale, 0))
-                .ForEachAsync(r => SetRotation(offset, startVirtualRotation, realCenter, r));
+            var startVirtualRotation = Target.localRotation;
+            return Observable.Scan(move, startVirtualRotation,
+                    (a, b) => a * Quaternion.Euler(0f, b.y * Scale * Time.deltaTime, 0f))
+                .ForEachAsync(r => SetRotation(startLocalPosition, startVirtualRotation, realCenter, r));
         });
     }
 
-    void SetRotation(Vector3 offset, Quaternion startVirtualRotation, Vector3 realCenterPos, Quaternion targetRotation)
+    void SetRotation(Vector3 startLocalPosition, Quaternion startVirtualRotation, Vector3 realCenterPos, Quaternion targetRotation)
     {
-        Target.localPosition = offset + startVirtualRotation * realCenterPos - targetRotation * realCenterPos;
+        Target.localPosition = startLocalPosition + startVirtualRotation * realCenterPos - targetRotation * realCenterPos;
         Target.localRotation = targetRotation;
     }
 }
