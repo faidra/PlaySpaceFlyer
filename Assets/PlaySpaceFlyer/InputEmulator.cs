@@ -38,9 +38,9 @@ public class InputEmulator : MonoBehaviour
 
     IEnumerable<uint> GetAllOpenVRDeviceIds()
     {
-        for (var i = 0u; i < OpenVR.k_unMaxTrackedDeviceCount; ++i)
+        for (var i = 0u; i < SteamVR.connected.Length; ++i)
         {
-            if (OpenVR.System.IsTrackedDeviceConnected(i)) yield return i;
+            if (SteamVR.connected[i]) yield return i;
         }
     }
 
