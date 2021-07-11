@@ -79,7 +79,8 @@ public class InputEmulator : MonoBehaviour
     {
         EnforceDeviceOffsetEnabled(openVRDeviceId);
         var rpos = ToRHand(pos);
-        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.SetDeviceOffset(openVRDeviceId, rpos.x, rpos.y, rpos.z);
+        var rrot = ToRHand(Quaternion.identity);
+        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.SetDeviceTransform(openVRDeviceId, rpos.x, rpos.y, rpos.z, rrot.x, rrot.y, rrot.z, rrot.w);
     }
 
     void SetDeviceWorldRotOffset(uint openVRDeviceId, Quaternion rot)
@@ -100,7 +101,7 @@ public class InputEmulator : MonoBehaviour
 
     void DisableDeviceOffsets(uint openVRDeviceId)
     {
-        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.ResetAndDisableOffsets(openVRDeviceId);
+        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.ResetAndDisableDeviceTransform(openVRDeviceId);
         isDeviceOffsetEnabled[openVRDeviceId] = false;
     }
 
