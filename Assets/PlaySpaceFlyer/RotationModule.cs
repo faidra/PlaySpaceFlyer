@@ -50,7 +50,7 @@ public class RotationModule : MonoBehaviour
             var realCenter = InputEmulator.GetRealPosition(virtualCenter);
             var startVirtualRotation = InputEmulator.CurrentRotation;
             var startRealRotation = InputEmulator.GetRealRotation(HMD.Rotation);
-            return Observable.Scan(move, (a, b) => a + b * Time.deltaTime)
+            return Observable.Scan(move, Vector3.zero, (a, b) => a + b * Time.deltaTime)
                 .Select(movement => Quaternion.Inverse(startRealRotation) * movement * Scale)
                 .Select(movement => startVirtualRotation * Quaternion.Euler(0, movement.y, 0))
                 .ForEachAsync(r => SetRotation(offset, startVirtualRotation, realCenter, r));
