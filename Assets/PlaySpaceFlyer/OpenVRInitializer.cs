@@ -49,7 +49,7 @@ public class OpenVRInitializer : MonoBehaviour
 
     void OnDestroy()
     {
-        FindObjectOfType<InputEmulator>()?.DisableAllDeviceWorldPosOffset();
+        FindObjectOfType<InputEmulator>()?.DisableAllDeviceTransform();
         if (XRSettings.loadedDeviceName != "None")
         {
             XRSettings.LoadDeviceByName("None");

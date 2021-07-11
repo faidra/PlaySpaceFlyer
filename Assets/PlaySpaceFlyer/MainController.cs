@@ -20,9 +20,9 @@ public class MainController : MonoBehaviour
 
     void LateUpdate()
     {
-        var position = Target.transform.position;
-        var rotation = Target.transform.rotation;
-        //InputEmulator.SetAllDeviceWorldRotOffset(rotation);
-        InputEmulator.SetAllDeviceWorldPosOffset(position);
+        var transform = Target.transform;
+        var position = transform.position;
+        var rotation = transform.rotation;
+        InputEmulator.SetAllDeviceTransform(position, rotation);
     }
 }

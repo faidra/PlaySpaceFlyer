@@ -13,10 +13,6 @@ public class InputEmulator : MonoBehaviour
 
     public Vector3 ReferenceBaseStationPosition { get; private set; }
 
-    ProcessStartInfo processStartInfo;
-
-    bool[] isDeviceOffsetEnabled = new bool[OpenVR.k_unMaxTrackedDeviceCount];
-
     void Start()
     {
         OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.Connect();
@@ -32,20 +28,11 @@ public class InputEmulator : MonoBehaviour
         return Quaternion.Inverse(CurrentRotation) * virtualRawRotation;
     }
 
-    public void SetAllDeviceWorldPosOffset(Vector3 pos)
+    public void SetAllDeviceTransform(Vector3 pos, Quaternion rot)
     {
         if (pos == CurrentOffset) return;
-        foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldPosOffset(id, pos);
+        foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceTransform(id, pos, rot);
         CurrentOffset = pos;
-    }
-
-    public void SetAllDeviceWorldRotOffset(Quaternion rot)
-    {
-        Debug.LogError("SetRot is not implemented");
-        return;
-        if (rot == CurrentRotation) return;
-        foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceWorldRotOffset(id, rot);
-        CurrentRotation = rot;
     }
 
     public void SetReferenceBaseStation(uint deviceId)
@@ -55,16 +42,10 @@ public class InputEmulator : MonoBehaviour
         ReferenceBaseStationPosition = new SteamVR_Utils.RigidTransform(pose.mDeviceToAbsoluteTracking).pos;
     }
 
-    public void DisableAllDeviceWorldPosOffset()
+    public void DisableAllDeviceTransform()
     {
-        foreach (var id in GetAllOpenVRDeviceIds()) DisableDeviceOffsets(id);
+        foreach (var id in GetAllOpenVRDeviceIds()) DisableDeviceTransform(id);
         CurrentOffset = Vector3.zero;
-    }
-
-    void OnDestroy()
-    {
-        if (OpenVR.System == null) return;
-        DisableAllDeviceWorldPosOffset();
     }
 
     IEnumerable<uint> GetAllOpenVRDeviceIds()
@@ -75,34 +56,22 @@ public class InputEmulator : MonoBehaviour
         }
     }
 
-    void SetDeviceWorldPosOffset(uint openVRDeviceId, Vector3 pos)
+    void SetDeviceTransform(uint openVRDeviceId, Vector3 pos, Quaternion rot)
     {
-        EnforceDeviceOffsetEnabled(openVRDeviceId);
         var rpos = ToRHand(pos);
-        var rrot = ToRHand(Quaternion.identity);
+        var rrot = ToRHand(rot);
         OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.SetDeviceTransform(openVRDeviceId, rpos.x, rpos.y, rpos.z, rrot.x, rrot.y, rrot.z, rrot.w);
     }
 
-    void SetDeviceWorldRotOffset(uint openVRDeviceId, Quaternion rot)
-    {
-        throw new NotImplementedException();
-        // EnforceDeviceOffsetEnabled(openVRDeviceId);
-        // inputSimulator.SetWorldFromDriverRotationOffset(openVRDeviceId, rot, true);
-    }
-
-    void EnforceDeviceOffsetEnabled(uint openVRDeviceId)
-    {
-        if (!isDeviceOffsetEnabled[openVRDeviceId])
-        {
-            // inputSimulator.EnableDeviceOffsets(openVRDeviceId, true, true);
-            isDeviceOffsetEnabled[openVRDeviceId] = true;
-        }
-    }
-
-    void DisableDeviceOffsets(uint openVRDeviceId)
+    void DisableDeviceTransform(uint openVRDeviceId)
     {
         OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.ResetAndDisableDeviceTransform(openVRDeviceId);
-        isDeviceOffsetEnabled[openVRDeviceId] = false;
+    }
+
+    void OnDestroy()
+    {
+        if (OpenVR.System == null) return;
+        DisableAllDeviceTransform();
     }
 
     static (double x, double y, double z) ToRHand(Vector3 vec)
