@@ -7,6 +7,15 @@ using Valve.VR;
 
 public class OpenVRInitializer : MonoBehaviour
 {
+    [RuntimeInitializeOnLoadMethod]
+    static void OnLoad()
+    {
+        if (SceneManager.GetActiveScene().name != "Init")
+        {
+            SceneManager.LoadScene("Init");
+        }
+    }
+    
     IEnumerator Start()
     {
         var openVRError = EVRInitError.None;
