@@ -20,11 +20,6 @@ public class TrackerSelector : MonoBehaviour
         var count = OpenVR.System.GetSortedTrackedDeviceIndicesOfClass(ETrackedDeviceClass.GenericTracker, ids, 0u);
         if (_trackingReferenceIds.Length != count + 1)
         {
-            for (var i = 0u; i < OpenVR.k_unMaxTrackedDeviceCount; ++i)
-            {
-                Debug.LogError(i.ToString() + OpenVR.System.GetTrackedDeviceClass(i));
-            }
-
             _trackingReferenceIds = ids.Take((int) count).Prepend(0u).ToArray();
             Dropdown.options = _trackingReferenceIds.Select(id => new Dropdown.OptionData(id.ToString())).ToList();
             var preferedIndex = _trackingReferenceIds.IndexOf(i => i == prefered);

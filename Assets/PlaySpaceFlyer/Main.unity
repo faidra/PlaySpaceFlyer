@@ -1973,18 +1973,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 735208505}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &735208507 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8059731029286864000, guid: 5b7c8dd4853c2d94cbd49ffadcb0b55d,
-    type: 3}
-  m_PrefabInstance: {fileID: 735208505}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f90bd0968f42349b9e85d7abfa762b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &795965334
 GameObject:
   m_ObjectHideFlags: 0
@@ -2360,7 +2348,7 @@ GameObject:
   - component: {fileID: 919382199}
   - component: {fileID: 919382198}
   m_Layer: 0
-  m_Name: ChestTracker
+  m_Name: WaistTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2378,7 +2366,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea64c193225492cbb77bf79fc1c8ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackerSelector: {fileID: 8190006438319500872}
+  inputSource: 7
+  pose:
+    actionPath: /actions/default/in/Pose
+    needsReinit: 0
 --- !u!4 &919382199
 Transform:
   m_ObjectHideFlags: 0
@@ -2968,7 +2959,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea64c193225492cbb77bf79fc1c8ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackerSelector: {fileID: 735208507}
+  inputSource: 4
+  pose:
+    actionPath: /actions/default/in/Pose
+    needsReinit: 0
 --- !u!4 &1188501129
 Transform:
   m_ObjectHideFlags: 0
@@ -4985,18 +4979,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1994679046}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1994679048 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8059731029286864000, guid: 5b7c8dd4853c2d94cbd49ffadcb0b55d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1994679046}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f90bd0968f42349b9e85d7abfa762b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1998022849
 GameObject:
   m_ObjectHideFlags: 0
@@ -5279,7 +5261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea64c193225492cbb77bf79fc1c8ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackerSelector: {fileID: 1994679048}
+  inputSource: 3
+  pose:
+    actionPath: /actions/default/in/Pose
+    needsReinit: 0
 --- !u!4 &2134951734
 Transform:
   m_ObjectHideFlags: 0
@@ -5431,15 +5416,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 8190006438319500870}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8190006438319500872 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8059731029286864000, guid: 5b7c8dd4853c2d94cbd49ffadcb0b55d,
-    type: 3}
-  m_PrefabInstance: {fileID: 8190006438319500870}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f90bd0968f42349b9e85d7abfa762b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
