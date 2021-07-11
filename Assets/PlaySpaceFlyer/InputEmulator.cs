@@ -1,17 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Valve.VR;
-using System.Linq;
-using Debug = UnityEngine.Debug;
 
 public class InputEmulator : MonoBehaviour
 {
     public Vector3 CurrentOffset { get; private set; }
     public Quaternion CurrentRotation { get; private set; }
-
-    public Vector3 ReferenceBaseStationPosition { get; private set; }
 
     void Start()
     {
@@ -20,7 +14,7 @@ public class InputEmulator : MonoBehaviour
 
     public Vector3 GetRealPosition(Vector3 virtualRawPosition)
     {
-        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset - ReferenceBaseStationPosition) + ReferenceBaseStationPosition;
+        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset);
     }
 
     public Quaternion GetRealRotation(Quaternion virtualRawRotation)
@@ -34,13 +28,6 @@ public class InputEmulator : MonoBehaviour
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceTransform(id, pos, rot);
         CurrentOffset = pos;
         CurrentRotation = rot;
-    }
-
-    public void SetReferenceBaseStation(uint deviceId)
-    {
-        TrackedDevicePose_t pose = default, gamePose = default;
-        OpenVR.Compositor.GetLastPoseForTrackedDeviceIndex(deviceId, ref pose, ref gamePose);
-        ReferenceBaseStationPosition = pose.mDeviceToAbsoluteTracking.GetPosition();
     }
 
     public void DisableAllDeviceTransform()

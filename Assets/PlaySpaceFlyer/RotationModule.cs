@@ -57,8 +57,7 @@ public class RotationModule : MonoBehaviour
 
     void SetRotation(Vector3 offset, Quaternion startVirtualRotation, Vector3 realCenterPos, Quaternion targetRotation)
     {
-        var offsetedCenter = realCenterPos - InputEmulator.ReferenceBaseStationPosition;
-        Target.localPosition = offset + startVirtualRotation * offsetedCenter - targetRotation * offsetedCenter;
+        Target.localPosition = offset + startVirtualRotation * realCenterPos - targetRotation * realCenterPos;
         Target.localRotation = targetRotation;
     }
 }

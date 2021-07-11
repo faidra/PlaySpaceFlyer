@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UniRx;
 
 public class MainController : MonoBehaviour
 {
@@ -7,16 +6,6 @@ public class MainController : MonoBehaviour
     InputEmulator InputEmulator;
     [SerializeField]
     Transform Target;
-
-    [SerializeField]
-    TrackingReferenceSelector TrackingReferenceSeloctor;
-    
-    void Start()
-    {
-        TrackingReferenceSeloctor.SelectedTrackingReferenceIdAsObservable()
-            .Subscribe(InputEmulator.SetReferenceBaseStation)
-            .AddTo(this);
-    }
 
     void LateUpdate()
     {
