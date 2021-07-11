@@ -30,9 +30,10 @@ public class InputEmulator : MonoBehaviour
 
     public void SetAllDeviceTransform(Vector3 pos, Quaternion rot)
     {
-        if (pos == CurrentOffset) return;
+        if (pos == CurrentOffset && rot == CurrentRotation) return;
         foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceTransform(id, pos, rot);
         CurrentOffset = pos;
+        CurrentRotation = rot;
     }
 
     public void SetReferenceBaseStation(uint deviceId)
