@@ -1854,7 +1854,7 @@ MonoBehaviour:
   InputEmulator: {fileID: 113409152}
   Moving: {fileID: 900804357}
   SwitchMove: {fileID: 1075717286}
-  SpeedMultiplier: 8
+  SpeedMultiplier: 12
 --- !u!4 &1075717285
 Transform:
   m_ObjectHideFlags: 0
@@ -3602,7 +3602,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!224 &1998022851
 RectTransform:
   m_ObjectHideFlags: 0
