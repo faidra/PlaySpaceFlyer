@@ -11,6 +11,8 @@ public class Controller : MonoBehaviour
     [SerializeField] SteamVR_Action_Boolean modifier;
     [SerializeField] SteamVR_Action_Boolean canceller;
 
+    public SteamVR_Input_Sources InputSources => inputSource;
+    
     public Vector3 Position { get; private set; }
     readonly public ReactiveProperty<bool> MainButtonPressed = new ReactiveProperty<bool>();
     readonly public ReactiveProperty<bool> ModifierPressed = new ReactiveProperty<bool>();

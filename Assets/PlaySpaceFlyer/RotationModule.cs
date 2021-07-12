@@ -10,7 +10,7 @@ public class RotationModule : MonoBehaviour
     [SerializeField]
     Transform Target;
     [SerializeField]
-    DoubleDrag Left;
+    DoubleDrag2 source;
     [SerializeField]
     HMD HMD;
     [SerializeField]
@@ -27,7 +27,7 @@ public class RotationModule : MonoBehaviour
     
     void Start()
     {
-        Left.MovesAsObservable()
+        source.MovesAsObservable()
             .Where(_ => useRotate.isOn)
             .SelectMany(move => MoveToRotateAsObservable(move))
             .Subscribe()
