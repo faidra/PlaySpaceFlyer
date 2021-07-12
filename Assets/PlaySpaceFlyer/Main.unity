@@ -2119,6 +2119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1185084572}
   - component: {fileID: 1185084573}
+  - component: {fileID: 1185084574}
   m_Layer: 0
   m_Name: Rotate
   m_TagString: Untagged
@@ -2155,13 +2156,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputEmulator: {fileID: 113409152}
   Target: {fileID: 1185084572}
-  Left: {fileID: 900804355}
+  source: {fileID: 1185084574}
   HMD: {fileID: 1805358344}
   BaseHeight: 1.6
   CenterOffsetMax: 7
   Scale: 800
   ResetEvent: {fileID: 1256772338}
   useRotate: {fileID: 1998022850}
+--- !u!114 &1185084574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185084571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a2595435f94a15933d07037b7526d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 900804353}
+  actionBoolean:
+    actionPath: /actions/default/in/Modifier
+    needsReinit: 0
+  graceSeconds: 0.25
+  inputEmulator: {fileID: 113409152}
 --- !u!1 &1188501127
 GameObject:
   m_ObjectHideFlags: 0
