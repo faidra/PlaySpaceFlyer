@@ -8,6 +8,7 @@ public sealed class SpaceKickModule : MonoBehaviour
     [SerializeField] Tracker footTracker;
     [SerializeField] float threshold;
     [SerializeField] float magnify;
+    [SerializeField] float error;
 
     bool hasPrevDiff;
     Vector3 diff;
@@ -34,6 +35,11 @@ public sealed class SpaceKickModule : MonoBehaviour
         var deltaTime = Time.deltaTime;
         var velocity = (diff - prevDiff) / deltaTime;
         var magnitude = velocity.magnitude;
+        if (magnitude > error)
+        {
+            hasPrevDiff = false;
+            return;
+        }
         if (magnitude < threshold || Vector3.Dot(diff, velocity) < 0)
         {
             return;
