@@ -16,12 +16,12 @@ public class CenterOfMass : MonoBehaviour
             com = default;
             return false;
         }
-        com = hmd.Position * 0.2f +
-              lHand.Position * 0.2f +
-              rHand.Position * 0.2f +
-              chest.Position * 0.2f +
-              lFoot.Position * 0.2f +
-              rFoot.Position * 0.2f;
+        com = (hmd.Position * 1f +
+              lHand.Position * 1f +
+              rHand.Position * 1f +
+              chest.Position * 1f +
+              lFoot.Position * 1f +
+              rFoot.Position * 1f) / 6f;
         return true;
     }
 }
