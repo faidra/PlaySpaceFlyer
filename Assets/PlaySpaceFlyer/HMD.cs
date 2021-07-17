@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 public class HMD : MonoBehaviour
 {
     public Vector3 Position { get; private set; }
-    public Quaternion Rotation { get; private set; }
+    public Quaternion Rotation { get; private set; } = Quaternion.identity;
 
     void Update()
     {

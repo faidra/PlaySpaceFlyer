@@ -5,7 +5,7 @@ using Valve.VR;
 public class InputEmulator : MonoBehaviour
 {
     public Vector3 CurrentOffset { get; private set; }
-    public Quaternion CurrentRotation { get; private set; }
+    public Quaternion CurrentRotation { get; private set; } = Quaternion.identity;
 
     readonly Dictionary<uint, (Vector3 pos, Quaternion rot)> lastUpdated = new Dictionary<uint, (Vector3 pos, Quaternion rot)>();
 

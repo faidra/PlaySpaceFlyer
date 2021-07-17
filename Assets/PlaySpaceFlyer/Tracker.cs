@@ -8,7 +8,7 @@ public class Tracker : MonoBehaviour
     
     public bool IsActive { get; private set; }
     public Vector3 Position { get; private set; }
-    public Quaternion Rotation { get; private set; }
+    public Quaternion Rotation { get; private set; } = Quaternion.identity;
 
     void Update()
     {
