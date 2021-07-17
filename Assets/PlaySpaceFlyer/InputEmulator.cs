@@ -7,6 +7,8 @@ public class InputEmulator : MonoBehaviour
     public Vector3 CurrentOffset { get; private set; }
     public Quaternion CurrentRotation { get; private set; }
 
+    readonly Dictionary<uint, (Vector3 pos, Quaternion rot)> lastUpdated = new Dictionary<uint, (Vector3 pos, Quaternion rot)>();
+
     void Start()
     {
         OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.Connect();
@@ -24,8 +26,12 @@ public class InputEmulator : MonoBehaviour
 
     public void SetAllDeviceTransform(Vector3 pos, Quaternion rot)
     {
-        if (pos == CurrentOffset && rot == CurrentRotation) return;
-        foreach (var id in GetAllOpenVRDeviceIds()) SetDeviceTransform(id, pos, rot);
+        foreach (var id in GetAllOpenVRDeviceIds())
+        {
+            if (lastUpdated.TryGetValue(id, out var last) && last.pos == pos && last.rot == rot) continue;
+            SetDeviceTransform(id, pos, rot);
+            lastUpdated[id] = (pos, rot);
+        }
         CurrentOffset = pos;
         CurrentRotation = rot;
     }
