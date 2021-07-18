@@ -7,6 +7,8 @@ public class HMD : MonoBehaviour
     public Vector3 Position { get; private set; }
     public Quaternion Rotation { get; private set; } = Quaternion.identity;
 
+    public SteamVR_Input_Sources InputSources => SteamVR_Input_Sources.Head;
+
     void Update()
     {
         var openvr = OpenVR.System;

@@ -14,16 +14,6 @@ public class InputEmulator : MonoBehaviour
         OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.Connect();
     }
 
-    public Vector3 GetRealPosition(Vector3 virtualRawPosition)
-    {
-        return Quaternion.Inverse(CurrentRotation) * (virtualRawPosition - CurrentOffset);
-    }
-
-    public Quaternion GetRealRotation(Quaternion virtualRawRotation)
-    {
-        return Quaternion.Inverse(CurrentRotation) * virtualRawRotation;
-    }
-
     public void SetAllDeviceTransform(Vector3 pos, Quaternion rot)
     {
         foreach (var id in GetAllOpenVRDeviceIds())

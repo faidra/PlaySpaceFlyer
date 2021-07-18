@@ -9,8 +9,7 @@ public class DoubleDrag : MonoBehaviour
     Controller Controller;
     [SerializeField]
     float GraceSeconds;
-    [SerializeField]
-    InputEmulator InputEmulator;
+    [SerializeField] PoseReceiver poseReceiver;
 
     Vector3 DragStartPosition;
 
@@ -41,10 +40,10 @@ public class DoubleDrag : MonoBehaviour
 
     IObservable<Vector3> DragAsObservable()
     {
-        return Observable.Defer(() =>
-        {
-            var grabbedAt = InputEmulator.GetRealPosition(Controller.Position);
-            return this.UpdateAsObservable().Select(_ => InputEmulator.GetRealPosition(Controller.Position) - grabbedAt);
-        });
+        // 最初の位置から、毎フレーム合計の移動量を返す
+        return poseReceiver.OnPoseUpdatedAsObservable(Controller.InputSources).FirstOrDefault()
+            .ContinueWith(p => this.UpdateAsObservable()
+                .WithLatestFrom(poseReceiver.OnPoseUpdatedAsObservable(Controller.InputSources),
+                    (_, cp) => cp.pos - p.pos));
     }
 }

@@ -9,7 +9,7 @@ public sealed class DoubleDrag2 : MonoBehaviour
     [SerializeField] Controller controller;
     [SerializeField] SteamVR_Action_Boolean actionBoolean;
     [SerializeField] float graceSeconds;
-    [SerializeField] InputEmulator inputEmulator;
+    [SerializeField] PoseReceiver poseReceiver;
 
     public IObservable<Vector3> MoveAsObservable()
     {
@@ -26,12 +26,13 @@ public sealed class DoubleDrag2 : MonoBehaviour
             .Select(_ => DragAsObservable().TakeUntil(onRelease));
     }
 
+
     IObservable<Vector3> DragAsObservable()
     {
-        return Observable.Defer(() =>
-        {
-            var grabbedAt = inputEmulator.GetRealPosition(controller.Position);
-            return this.UpdateAsObservable().Select(_ => inputEmulator.GetRealPosition(controller.Position) - grabbedAt);
-        });
+        // 最初の位置から、毎フレーム合計の移動量を返す
+        return poseReceiver.OnPoseUpdatedAsObservable(controller.InputSources).FirstOrDefault()
+            .ContinueWith(p => this.UpdateAsObservable()
+                .WithLatestFrom(poseReceiver.OnPoseUpdatedAsObservable(controller.InputSources),
+                    (_, cp) => cp.pos - p.pos));
     }
 }
