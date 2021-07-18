@@ -35,7 +35,7 @@ public sealed class PoseReceiver : MonoBehaviour
             subject = new Subject<(Vector3 pos, Quaternion rot)>();
             subjects[deviceIndex] = subject;
         }
-        return subject;
+        return subject.ThrottleFrame(0);
     }
 
     void Start()
