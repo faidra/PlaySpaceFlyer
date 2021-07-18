@@ -70,7 +70,7 @@ public sealed class PoseReceiver : MonoBehaviour
         try
         {
             var prms = str.Split(',');
-            if (prms.Length != 8)
+            if (prms.Length <= 7)
             {
                 param = default;
                 return false;
