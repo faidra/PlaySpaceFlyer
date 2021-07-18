@@ -40,6 +40,7 @@ public class InputEmulator : MonoBehaviour
     {
         foreach (var id in GetAllOpenVRDeviceIds()) DisableDeviceTransform(id);
         CurrentOffset = Vector3.zero;
+        CurrentRotation = Quaternion.identity;
     }
 
     IEnumerable<uint> GetAllOpenVRDeviceIds()
