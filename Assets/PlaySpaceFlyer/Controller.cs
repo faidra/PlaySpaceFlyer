@@ -19,6 +19,21 @@ public class Controller : MonoBehaviour
     readonly public ReactiveProperty<bool> CancellerPressed = new ReactiveProperty<bool>();
     readonly public ReactiveProperty<Vector2> Stick = new ReactiveProperty<Vector2>();
 
+    void Start()
+    {
+        var debugCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        debugCube.name = inputSource.ToString();
+        debugCube.transform.localScale = Vector3.one * 0.2f;
+        Disposable.Create(() => Destroy(debugCube)).AddTo(this);
+
+        FindObjectOfType<PoseReceiver>().OnPoseUpdatedAsObservable(inputSource)
+            .Subscribe(p =>
+            {
+                debugCube.transform.position = p.pos;
+                debugCube.transform.rotation = p.rot;
+            }).AddTo(this);
+    }
+    
     void Update()
     {
         Position = pose.GetLocalPosition(inputSource);
