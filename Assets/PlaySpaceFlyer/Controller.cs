@@ -15,6 +15,7 @@ public class Controller : MonoBehaviour
     public SteamVR_Input_Sources InputSources => inputSource;
     
     public Vector3 Position { get; private set; }
+    public Quaternion Rotation { get; private set; }
     readonly public ReactiveProperty<bool> MainButtonPressed = new ReactiveProperty<bool>();
     readonly public ReactiveProperty<bool> ModifierPressed = new ReactiveProperty<bool>();
     readonly public ReactiveProperty<bool> CancellerPressed = new ReactiveProperty<bool>();
@@ -40,12 +41,14 @@ public class Controller : MonoBehaviour
                 debugCube.transform.rotation = p.rotation;
 
                 debugCube2.transform.position = Position;
+                debugCube2.transform.rotation = Rotation;
             }).AddTo(this);
     }
     
     void Update()
     {
         Position = pose.GetLocalPosition(inputSource);
+        Rotation = pose.GetLocalRotation(inputSource);
         Stick.Value = stick.GetAxis(inputSource);
         MainButtonPressed.Value = mainButton.GetState(inputSource);
         ModifierPressed.Value = modifier.GetState(inputSource);
