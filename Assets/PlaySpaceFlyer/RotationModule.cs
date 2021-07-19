@@ -44,8 +44,8 @@ public class RotationModule : MonoBehaviour
         return poseReceiver.OnPoseUpdatedAsObservable(SteamVR_Input_Sources.Head).FirstOrDefault()
             .ContinueWith(p =>
             {
-                var length = Mathf.Min(BaseHeight / Mathf.Abs(Mathf.Tan(p.rot.eulerAngles.x * Mathf.Deg2Rad)), CenterOffsetMax);
-                var center = p.pos + Quaternion.Euler(0, p.rot.eulerAngles.y, 0) * Vector3.forward * length;
+                var length = Mathf.Min(BaseHeight / Mathf.Abs(Mathf.Tan(p.rotation.eulerAngles.x * Mathf.Deg2Rad)), CenterOffsetMax);
+                var center = p.position + Quaternion.Euler(0, p.rotation.eulerAngles.y, 0) * Vector3.forward * length;
 
                 var startLocalPosition = Target.localPosition;
                 var startVirtualRotation = Target.localRotation;

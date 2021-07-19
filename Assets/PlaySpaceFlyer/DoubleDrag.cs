@@ -44,6 +44,6 @@ public class DoubleDrag : MonoBehaviour
         return poseReceiver.OnPoseUpdatedAsObservable(Controller.InputSources).FirstOrDefault()
             .ContinueWith(p => this.UpdateAsObservable()
                 .WithLatestFrom(poseReceiver.OnPoseUpdatedAsObservable(Controller.InputSources),
-                    (_, cp) => cp.pos - p.pos));
+                    (_, cp) => cp.position - p.position));
     }
 }

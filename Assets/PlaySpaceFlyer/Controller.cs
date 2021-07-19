@@ -35,9 +35,9 @@ public class Controller : MonoBehaviour
         FindObjectOfType<PoseReceiver>().OnPoseUpdatedAsObservable(inputSource)
             .Subscribe(p =>
             {
-                Debug.LogError(p.pos.y - Position.y);
-                debugCube.transform.position = p.pos;
-                debugCube.transform.rotation = p.rot;
+                Debug.LogError(p.position.y - Position.y);
+                debugCube.transform.position = p.position;
+                debugCube.transform.rotation = p.rotation;
 
                 debugCube2.transform.position = Position;
             }).AddTo(this);

@@ -33,6 +33,6 @@ public sealed class DoubleDrag2 : MonoBehaviour
         return poseReceiver.OnPoseUpdatedAsObservable(controller.InputSources).FirstOrDefault()
             .ContinueWith(p => this.UpdateAsObservable()
                 .WithLatestFrom(poseReceiver.OnPoseUpdatedAsObservable(controller.InputSources),
-                    (_, cp) => cp.pos - p.pos));
+                    (_, cp) => cp.position - p.position));
     }
 }
