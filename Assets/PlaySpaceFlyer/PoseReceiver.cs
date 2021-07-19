@@ -11,9 +11,9 @@ public sealed class PoseReceiver : MonoBehaviour
     
     UdpReceiver udpReceiver;
 
-    readonly Dictionary<uint, Subject<(Vector3 pos, Quaternion rot)>> subjects = new Dictionary<uint, Subject<(Vector3 pos, Quaternion rot)>>();
+    readonly Dictionary<uint, Subject<Parameter>> subjects = new Dictionary<uint, Subject<Parameter>>();
 
-    public IObservable<(Vector3 pos, Quaternion rot)> OnPoseUpdatedAsObservable(SteamVR_Input_Sources inputSources)
+    public IObservable<Parameter> OnPoseUpdatedAsObservable(SteamVR_Input_Sources inputSources)
         => Observable.Defer(() =>
         {
             {
@@ -28,11 +28,11 @@ public sealed class PoseReceiver : MonoBehaviour
                 });
         });
 
-    public IObservable<(Vector3 pos, Quaternion rot)> OnPoseUpdatedAsObservable(uint deviceIndex)
+    public IObservable<Parameter> OnPoseUpdatedAsObservable(uint deviceIndex)
     {
         if (!subjects.TryGetValue(deviceIndex, out var subject))
         {
-            subject = new Subject<(Vector3 pos, Quaternion rot)>();
+            subject = new Subject<Parameter>();
             subjects[deviceIndex] = subject;
         }
         return subject.ThrottleFrame(0);
@@ -48,10 +48,10 @@ public sealed class PoseReceiver : MonoBehaviour
     {
         if (!TryParse(str, out var param)) return;
         if (!subjects.TryGetValue(param.deviceIndex, out var subject)) return;
-        subject.OnNext((param.position, param.rotation));
+        subject.OnNext(param);
     }
 
-    readonly struct Parameter
+    public readonly struct Parameter
     {
         public readonly uint deviceIndex;
         public readonly Vector3 position;
