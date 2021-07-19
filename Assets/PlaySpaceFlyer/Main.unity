@@ -1286,7 +1286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Controller: {fileID: 718015043}
   GraceSeconds: 0.5
-  InputEmulator: {fileID: 113409152}
+  poseReceiver: {fileID: 79410115}
 --- !u!114 &718015046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1637,7 +1637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Controller: {fileID: 900804353}
   GraceSeconds: 0.25
-  InputEmulator: {fileID: 113409152}
+  poseReceiver: {fileID: 79410115}
 --- !u!114 &900804356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2288,15 +2288,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8614c7cd21bef44856fc7355810f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputEmulator: {fileID: 113409152}
   Target: {fileID: 1185084572}
   source: {fileID: 1185084574}
-  HMD: {fileID: 1805358344}
   BaseHeight: 1.6
   CenterOffsetMax: 7
   Scale: 800
   ResetEvent: {fileID: 1256772338}
   useRotate: {fileID: 1998022850}
+  poseReceiver: {fileID: 79410115}
 --- !u!114 &1185084574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2314,7 +2313,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Modifier
     needsReinit: 0
   graceSeconds: 0.25
-  inputEmulator: {fileID: 113409152}
+  poseReceiver: {fileID: 79410115}
 --- !u!1 &1188501127
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Valve.VR;
 using UniRx;
 
@@ -26,11 +27,19 @@ public class Controller : MonoBehaviour
         debugCube.transform.localScale = Vector3.one * 0.2f;
         Disposable.Create(() => Destroy(debugCube)).AddTo(this);
 
+        var debugCube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        debugCube2.name = inputSource.ToString();
+        debugCube2.transform.localScale = Vector3.one * 0.2f;
+        Disposable.Create(() => Destroy(debugCube2)).AddTo(this);
+
         FindObjectOfType<PoseReceiver>().OnPoseUpdatedAsObservable(inputSource)
             .Subscribe(p =>
             {
+                Debug.LogError(p.pos.y - Position.y);
                 debugCube.transform.position = p.pos;
                 debugCube.transform.rotation = p.rot;
+
+                debugCube2.transform.position = Position;
             }).AddTo(this);
     }
     
