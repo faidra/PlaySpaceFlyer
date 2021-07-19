@@ -56,12 +56,22 @@ public sealed class PoseReceiver : MonoBehaviour
         public readonly uint deviceIndex;
         public readonly Vector3 position;
         public readonly Quaternion rotation;
+        public readonly Vector3 worldFromDriverTranslation;
+        public readonly Quaternion worldFromDriverRotation;
+        public readonly Vector3 driverFromHeadTranslation;
+        public readonly Quaternion driverFromHeadRotation;
 
-        public Parameter(uint deviceIndex, Vector3 position, Quaternion rotation)
+        public Parameter(uint deviceIndex, Vector3 position, Quaternion rotation,
+            Vector3 worldFromDriverTranslation, Quaternion worldFromDriverRotation,
+            Vector3 driverFromHeadTranslation, Quaternion driverFromHeadRotation)
         {
             this.deviceIndex = deviceIndex;
             this.position = position;
             this.rotation = rotation;
+            this.worldFromDriverTranslation = worldFromDriverTranslation;
+            this.worldFromDriverRotation = worldFromDriverRotation;
+            this.driverFromHeadTranslation = driverFromHeadTranslation;
+            this.driverFromHeadRotation = driverFromHeadRotation;
         }
     }
 
@@ -70,14 +80,18 @@ public sealed class PoseReceiver : MonoBehaviour
         try
         {
             var prms = str.Split(',');
-            if (prms.Length <= 7)
+            if (prms.Length <= 21)
             {
                 param = default;
                 return false;
             }
             param = new Parameter(uint.Parse(prms[0]),
                 OpenVRExtensions.FromRHandPosition(double.Parse(prms[1]), double.Parse(prms[2]), double.Parse(prms[3])),
-                OpenVRExtensions.FromRHandRotation(double.Parse(prms[4]), double.Parse(prms[5]), double.Parse(prms[6]), double.Parse(prms[7])));
+                OpenVRExtensions.FromRHandRotation(double.Parse(prms[4]), double.Parse(prms[5]), double.Parse(prms[6]), double.Parse(prms[7])),
+                OpenVRExtensions.FromRHandPosition(double.Parse(prms[8]), double.Parse(prms[9]), double.Parse(prms[10])),
+                OpenVRExtensions.FromRHandRotation(double.Parse(prms[11]), double.Parse(prms[12]), double.Parse(prms[13]), double.Parse(prms[14])),
+                OpenVRExtensions.FromRHandPosition(double.Parse(prms[15]), double.Parse(prms[16]), double.Parse(prms[17])),
+                OpenVRExtensions.FromRHandRotation(double.Parse(prms[18]), double.Parse(prms[19]), double.Parse(prms[20]), double.Parse(prms[21])));
             return true;
         }
         catch
