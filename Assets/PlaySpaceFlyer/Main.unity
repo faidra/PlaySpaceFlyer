@@ -1258,6 +1258,9 @@ MonoBehaviour:
   canceller:
     actionPath: /actions/default/in/Canceller
     needsReinit: 0
+  sampleTranslation: {x: 0, y: 0, z: 0}
+  sampleRotation: {x: 319.3, y: 0, z: 338}
+  sampleRotationB: {x: 25.5, y: 270.4, z: 173.1}
 --- !u!4 &718015044
 Transform:
   m_ObjectHideFlags: 0
@@ -1609,6 +1612,9 @@ MonoBehaviour:
   canceller:
     actionPath: /actions/default/in/Canceller
     needsReinit: 0
+  sampleTranslation: {x: 0, y: 0, z: 0}
+  sampleRotation: {x: 0, y: 0, z: 0}
+  sampleRotationB: {x: 0, y: 0, z: 0}
 --- !u!4 &900804354
 Transform:
   m_ObjectHideFlags: 0

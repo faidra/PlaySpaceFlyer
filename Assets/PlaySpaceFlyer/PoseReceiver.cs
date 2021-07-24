@@ -8,12 +8,24 @@ using UniRx.Triggers;
 public sealed class PoseReceiver : MonoBehaviour
 {
     [SerializeField] SteamVR_Action_Pose dummyPose;
-    
+
+    public struct Pose
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+
+        public Pose(Vector3 position, Quaternion rotation)
+        {
+            this.position = position;
+            this.rotation = rotation;
+        }
+    }
+
     UdpReceiver udpReceiver;
 
-    readonly Dictionary<uint, Subject<Parameter>> subjects = new Dictionary<uint, Subject<Parameter>>();
+    readonly Dictionary<uint, Subject<string[]>> subjects = new Dictionary<uint, Subject<string[]>>();
 
-    public IObservable<Parameter> OnPoseUpdatedAsObservable(SteamVR_Input_Sources inputSources)
+    public IObservable<Pose> OnPoseUpdatedAsObservable(SteamVR_Input_Sources inputSources)
         => Observable.Defer(() =>
         {
             {
@@ -28,14 +40,14 @@ public sealed class PoseReceiver : MonoBehaviour
                 });
         });
 
-    public IObservable<Parameter> OnPoseUpdatedAsObservable(uint deviceIndex)
+    public IObservable<Pose> OnPoseUpdatedAsObservable(uint deviceIndex)
     {
         if (!subjects.TryGetValue(deviceIndex, out var subject))
         {
-            subject = new Subject<Parameter>();
+            subject = new Subject<string[]>();
             subjects[deviceIndex] = subject;
         }
-        return subject.ThrottleFrame(0);
+        return subject.ThrottleFrame(0).Select(GetPose);
     }
 
     void Start()
@@ -46,59 +58,36 @@ public sealed class PoseReceiver : MonoBehaviour
 
     void Handle(string str)
     {
-        if (!TryParse(str, out var param)) return;
-        if (!subjects.TryGetValue(param.deviceIndex, out var subject)) return;
-        subject.OnNext(param);
+        if (!TryGetId(str, out var id, out var splits)) return;
+        if (!subjects.TryGetValue(id, out var subject)) return;
+        subject.OnNext(splits);
     }
 
-    public readonly struct Parameter
+    Pose GetPose(string[] splits)
     {
-        public readonly uint deviceIndex;
-        public readonly Vector3 position;
-        public readonly Quaternion rotation;
-        public readonly Vector3 worldFromDriverTranslation;
-        public readonly Quaternion worldFromDriverRotation;
-        public readonly Vector3 driverFromHeadTranslation;
-        public readonly Quaternion driverFromHeadRotation;
+        var position = OpenVRExtensions.FromRHandPosition(double.Parse(splits[1]), double.Parse(splits[2]), double.Parse(splits[3]));
+        var rotation = OpenVRExtensions.FromRHandRotation(double.Parse(splits[4]), double.Parse(splits[5]), double.Parse(splits[6]), double.Parse(splits[7]));
+        var worldFromDriverTranslation = OpenVRExtensions.FromRHandPosition(double.Parse(splits[8]), double.Parse(splits[9]), double.Parse(splits[10]));
+        var worldFromDriverRotation = OpenVRExtensions.FromRHandRotation(double.Parse(splits[11]), double.Parse(splits[12]), double.Parse(splits[13]), double.Parse(splits[14]));
+        var driverFromHeadTranslation = OpenVRExtensions.FromRHandPosition(double.Parse(splits[15]), double.Parse(splits[16]), double.Parse(splits[17]));
+        var driverFromHeadRotation = OpenVRExtensions.FromRHandRotation(double.Parse(splits[18]), double.Parse(splits[19]), double.Parse(splits[20]), double.Parse(splits[21]));
 
-        public Parameter(uint deviceIndex, Vector3 position, Quaternion rotation,
-            Vector3 worldFromDriverTranslation, Quaternion worldFromDriverRotation,
-            Vector3 driverFromHeadTranslation, Quaternion driverFromHeadRotation)
-        {
-            this.deviceIndex = deviceIndex;
-            this.position = position;
-            this.rotation = rotation;
-            this.worldFromDriverTranslation = worldFromDriverTranslation;
-            this.worldFromDriverRotation = worldFromDriverRotation;
-            this.driverFromHeadTranslation = driverFromHeadTranslation;
-            this.driverFromHeadRotation = driverFromHeadRotation;
-        }
+        var worldFromDriverMatrix = Matrix4x4.TRS(worldFromDriverTranslation, worldFromDriverRotation, Vector3.one);
+        var driverFromHeadMatrix = Matrix4x4.TRS(driverFromHeadTranslation, driverFromHeadRotation, Vector3.one);
+        var devicePose = Matrix4x4.TRS(position, rotation, Vector3.one);
+        var pose = worldFromDriverMatrix * devicePose * driverFromHeadMatrix;
+        return new Pose(pose.GetPosition(), pose.GetRotation());
     }
 
-    bool TryParse(string str, out Parameter param)
+    bool TryGetId(string str, out uint id, out string[] splits)
     {
-        try
+        splits = str.Split(',');
+        if (splits.Length <= 12)
         {
-            var prms = str.Split(',');
-            if (prms.Length <= 21)
-            {
-                param = default;
-                return false;
-            }
-            param = new Parameter(uint.Parse(prms[0]),
-                OpenVRExtensions.FromRHandPosition(double.Parse(prms[1]), double.Parse(prms[2]), double.Parse(prms[3])),
-                OpenVRExtensions.FromRHandRotation(double.Parse(prms[4]), double.Parse(prms[5]), double.Parse(prms[6]), double.Parse(prms[7])),
-                OpenVRExtensions.FromRHandPosition(double.Parse(prms[8]), double.Parse(prms[9]), double.Parse(prms[10])),
-                OpenVRExtensions.FromRHandRotation(double.Parse(prms[11]), double.Parse(prms[12]), double.Parse(prms[13]), double.Parse(prms[14])),
-                OpenVRExtensions.FromRHandPosition(double.Parse(prms[15]), double.Parse(prms[16]), double.Parse(prms[17])),
-                OpenVRExtensions.FromRHandRotation(double.Parse(prms[18]), double.Parse(prms[19]), double.Parse(prms[20]), double.Parse(prms[21])));
-            return true;
-        }
-        catch
-        {
-            param = default;
+            id = default;
             return false;
         }
+        return uint.TryParse(splits[0], out id);
     }
 
     bool TryGetDeviceIndex(SteamVR_Input_Sources inputSources, out uint id)

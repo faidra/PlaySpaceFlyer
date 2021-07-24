@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Valve.VR;
 using UniRx;
 
@@ -21,30 +20,6 @@ public class Controller : MonoBehaviour
     readonly public ReactiveProperty<bool> CancellerPressed = new ReactiveProperty<bool>();
     readonly public ReactiveProperty<Vector2> Stick = new ReactiveProperty<Vector2>();
 
-    void Start()
-    {
-        var debugCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        debugCube.name = inputSource.ToString();
-        debugCube.transform.localScale = Vector3.one * 0.2f;
-        Disposable.Create(() => Destroy(debugCube)).AddTo(this);
-
-        var debugCube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        debugCube2.name = inputSource.ToString();
-        debugCube2.transform.localScale = Vector3.one * 0.2f;
-        Disposable.Create(() => Destroy(debugCube2)).AddTo(this);
-
-        FindObjectOfType<PoseReceiver>().OnPoseUpdatedAsObservable(inputSource)
-            .Subscribe(p =>
-            {
-                Debug.LogError(p.position.y - Position.y);
-                debugCube.transform.position = p.position;
-                debugCube.transform.rotation = p.rotation;
-
-                debugCube2.transform.position = Position;
-                debugCube2.transform.rotation = Rotation;
-            }).AddTo(this);
-    }
-    
     void Update()
     {
         Position = pose.GetLocalPosition(inputSource);
