@@ -82,7 +82,7 @@ public sealed class PoseReceiver : MonoBehaviour
     bool TryGetId(string str, out uint id, out string[] splits)
     {
         splits = str.Split(',');
-        if (splits.Length <= 12)
+        if (splits.Length <= 21)
         {
             id = default;
             return false;

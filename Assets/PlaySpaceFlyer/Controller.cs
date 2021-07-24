@@ -10,6 +10,7 @@ public class Controller : MonoBehaviour
     [SerializeField] SteamVR_Action_Boolean mainButton;
     [SerializeField] SteamVR_Action_Boolean modifier;
     [SerializeField] SteamVR_Action_Boolean canceller;
+    [SerializeField] PoseReceiver poseReceiver;
 
     public SteamVR_Input_Sources InputSources => inputSource;
     
@@ -20,10 +21,18 @@ public class Controller : MonoBehaviour
     readonly public ReactiveProperty<bool> CancellerPressed = new ReactiveProperty<bool>();
     readonly public ReactiveProperty<Vector2> Stick = new ReactiveProperty<Vector2>();
 
+    void Start()
+    {
+        poseReceiver.OnPoseUpdatedAsObservable(inputSource)
+            .Subscribe(p =>
+            {
+                Position = p.position;
+                Rotation = p.rotation;
+            }).AddTo(this);
+    }
+
     void Update()
     {
-        Position = pose.GetLocalPosition(inputSource);
-        Rotation = pose.GetLocalRotation(inputSource);
         Stick.Value = stick.GetAxis(inputSource);
         MainButtonPressed.Value = mainButton.GetState(inputSource);
         ModifierPressed.Value = modifier.GetState(inputSource);
