@@ -20,5 +20,7 @@ public class HMD : MonoBehaviour
                 Position = p.position;
                 Rotation = p.rotation;
             }).AddTo(this);
+
+        PoseVisualizer.Create(this, () => new PoseVisualizer.Param(true, Position, Rotation, new Vector3(0.3f, 0.3f, 0.3f)));
     }
 }

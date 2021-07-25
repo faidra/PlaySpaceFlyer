@@ -22,6 +22,8 @@ public class Tracker : MonoBehaviour
                 Position = p.position;
                 Rotation = p.rotation;
             }).AddTo(this);
+
+        PoseVisualizer.Create(this, () => new PoseVisualizer.Param(IsActive, Position, Rotation, new Vector3(0.3f, 0.3f, 0.3f)));
     }
 
     void Update()

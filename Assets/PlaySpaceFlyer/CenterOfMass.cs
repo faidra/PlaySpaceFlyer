@@ -24,4 +24,10 @@ public class CenterOfMass : MonoBehaviour
               rFoot.Position * 1f) / 6f;
         return true;
     }
+
+    void Start()
+    {
+        PoseVisualizer.Create(this, () =>
+            new PoseVisualizer.Param(TryGetCOM(out var com), com, Quaternion.identity, new Vector3(0.3f, 0.3f, 0.3f)));
+    }
 }

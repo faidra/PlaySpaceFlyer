@@ -12,9 +12,21 @@ public sealed class SpaceKickModule : MonoBehaviour
 
     bool hasPrevDiff;
     Vector3 legToCenter;
+    Vector3 velocity;
 
     readonly Subject<Vector3> kick = new Subject<Vector3>();
     public IObservable<Vector3> KickAsObservable() => kick;
+
+    void Start()
+    {
+        const float speedToSize = 1f;
+        PoseVisualizer.Create(this, () =>
+            new PoseVisualizer.Param(
+                hasPrevDiff,
+                footTracker.Position + velocity * speedToSize * 0.5f,
+                Quaternion.LookRotation(velocity),
+                new Vector3(0.1f, 0.1f, speedToSize * velocity.magnitude)));
+    }
 
     void Update()
     {
@@ -33,7 +45,7 @@ public sealed class SpaceKickModule : MonoBehaviour
         }
 
         var deltaTime = Time.deltaTime;
-        var velocity = (legToCenter - prevLegToCenter) / deltaTime;
+        velocity = (legToCenter - prevLegToCenter) / deltaTime;
         var magnitude = velocity.magnitude;
         if (magnitude > error)
         {
