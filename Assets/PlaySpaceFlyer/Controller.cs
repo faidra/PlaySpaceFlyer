@@ -2,7 +2,7 @@
 using Valve.VR;
 using UniRx;
 
-public class Controller : MonoBehaviour
+public sealed class Controller : MonoBehaviour
 {
     [SerializeField] SteamVR_Input_Sources inputSource;
     [SerializeField] SteamVR_Action_Vector2 stick;
@@ -11,6 +11,7 @@ public class Controller : MonoBehaviour
     [SerializeField] SteamVR_Action_Boolean modifier;
     [SerializeField] SteamVR_Action_Boolean canceller;
     [SerializeField] PoseReceiver poseReceiver;
+    [SerializeField] float smoothTime;
 
     public SteamVR_Input_Sources InputSources => inputSource;
     
@@ -21,12 +22,15 @@ public class Controller : MonoBehaviour
     readonly public ReactiveProperty<bool> CancellerPressed = new ReactiveProperty<bool>();
     readonly public ReactiveProperty<Vector2> Stick = new ReactiveProperty<Vector2>();
 
+    Vector3 targetPosition;
+    Vector3 vel;
+    
     void Start()
     {
         poseReceiver.OnPoseUpdatedAsObservable(inputSource)
             .Subscribe(p =>
             {
-                Position = p.position;
+                targetPosition = p.position;
                 Rotation = p.rotation;
             }).AddTo(this);
         
@@ -39,5 +43,6 @@ public class Controller : MonoBehaviour
         MainButtonPressed.Value = mainButton.GetState(inputSource);
         ModifierPressed.Value = modifier.GetState(inputSource);
         CancellerPressed.Value = canceller.GetState(inputSource);
+        Position = Vector3.SmoothDamp(Position, targetPosition, ref vel, smoothTime);
     }
 }

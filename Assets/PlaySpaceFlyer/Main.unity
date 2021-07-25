@@ -1259,6 +1259,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Canceller
     needsReinit: 0
   poseReceiver: {fileID: 79410115}
+  smoothTime: 0.1
 --- !u!4 &718015044
 Transform:
   m_ObjectHideFlags: 0
@@ -1611,6 +1612,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Canceller
     needsReinit: 0
   poseReceiver: {fileID: 79410115}
+  smoothTime: 0.1
 --- !u!4 &900804354
 Transform:
   m_ObjectHideFlags: 0
@@ -1701,6 +1703,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Pose
     needsReinit: 0
   poseReceiver: {fileID: 79410115}
+  smoothTime: 0.1
 --- !u!4 &919382199
 Transform:
   m_ObjectHideFlags: 0
@@ -2351,6 +2354,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Pose
     needsReinit: 0
   poseReceiver: {fileID: 79410115}
+  smoothTime: 0.1
 --- !u!4 &1188501129
 Transform:
   m_ObjectHideFlags: 0
@@ -3195,6 +3199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poseReceiver: {fileID: 79410115}
+  smoothTime: 0.1
 --- !u!4 &1805358345
 Transform:
   m_ObjectHideFlags: 0
@@ -3928,6 +3933,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Pose
     needsReinit: 0
   poseReceiver: {fileID: 79410115}
+  smoothTime: 0.1
 --- !u!4 &2134951734
 Transform:
   m_ObjectHideFlags: 0

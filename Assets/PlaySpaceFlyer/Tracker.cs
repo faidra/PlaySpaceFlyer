@@ -2,11 +2,12 @@
 using UnityEngine;
 using Valve.VR;
 
-public class Tracker : MonoBehaviour
+public sealed class Tracker : MonoBehaviour
 {
     [SerializeField] SteamVR_Input_Sources inputSource;
     [SerializeField] SteamVR_Action_Pose pose;
     [SerializeField] PoseReceiver poseReceiver;
+    [SerializeField] float smoothTime;
     
     public bool IsActive { get; private set; }
     public Vector3 Position { get; private set; }
@@ -14,12 +15,15 @@ public class Tracker : MonoBehaviour
     
     public SteamVR_Input_Sources InputSources => SteamVR_Input_Sources.Head;
 
+    Vector3 targetPosition;
+    Vector3 vel;
+
     void Start()
     {
         poseReceiver.OnPoseUpdatedAsObservable(inputSource)
             .Subscribe(p =>
             {
-                Position = p.position;
+                targetPosition = p.position;
                 Rotation = p.rotation;
             }).AddTo(this);
 
@@ -29,5 +33,6 @@ public class Tracker : MonoBehaviour
     void Update()
     {
         IsActive = pose.GetPoseIsValid(inputSource);
+        Position = Vector3.SmoothDamp(Position, targetPosition, ref vel, smoothTime);
     }
 }

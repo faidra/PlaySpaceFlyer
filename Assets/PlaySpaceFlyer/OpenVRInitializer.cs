@@ -44,6 +44,8 @@ public class OpenVRInitializer : MonoBehaviour
 
         SteamVR_Action_Pose.SetTrackingUniverseOrigin(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated); // Settingsで変えるとCompositerの書き換え合戦が発生するので
 
+        Application.targetFrameRate = 5;
+
         SceneManager.LoadScene("Main");
     }
 
