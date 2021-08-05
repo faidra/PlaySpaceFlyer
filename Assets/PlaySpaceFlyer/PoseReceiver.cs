@@ -21,9 +21,7 @@ public sealed class PoseReceiver : MonoBehaviour
         }
     }
 
-    UdpReceiver udpReceiver;
-
-    readonly Dictionary<uint, Subject<string[]>> subjects = new Dictionary<uint, Subject<string[]>>();
+    readonly Dictionary<uint, Subject<Pose>> subjects = new Dictionary<uint, Subject<Pose>>();
 
     public IObservable<Pose> OnPoseUpdatedAsObservable(SteamVR_Input_Sources inputSources)
         => Observable.Defer(() =>
@@ -44,38 +42,41 @@ public sealed class PoseReceiver : MonoBehaviour
     {
         if (!subjects.TryGetValue(deviceIndex, out var subject))
         {
-            subject = new Subject<string[]>();
+            subject = new Subject<Pose>();
             subjects[deviceIndex] = subject;
         }
-        return subject.ThrottleFrame(0).Select(GetPose);
+        return subject;
     }
 
-    void Start()
+    void Update()
     {
-        udpReceiver = new UdpReceiver("127.0.0.1", 12345).AddTo(this);
-        udpReceiver.OnReceivedAsObservable().Subscribe(Handle).AddTo(this);
+        var devicePoses = OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.GetDevicePoses();
+        for (var i = 0; i < devicePoses.length; ++i)
+        {
+            var pose = devicePoses.devicePoses[i];
+            if (!subjects.TryGetValue(pose.openVRID, out var subject)) continue;
+            subject.OnNext(GetPose(pose));
+        }
     }
 
-    void Handle(string str)
+    Pose GetPose(OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.DevicePoses.DevicePose devicePose)
     {
-        if (!TryGetId(str, out var id, out var splits)) return;
-        if (!subjects.TryGetValue(id, out var subject)) return;
-        subject.OnNext(splits);
-    }
+        // OpenVR側に方法あるだろうけどとりあえず……
+        Vector3 ConvertVector(double[] source) => OpenVRExtensions.FromRHandPosition(source[0], source[1], source[2]);
+        Quaternion ConvertRotation(HmdQuaternion_t source) => OpenVRExtensions.FromRHandRotation(source.x, source.y, source.z, source.w);
 
-    Pose GetPose(string[] splits)
-    {
-        var position = OpenVRExtensions.FromRHandPosition(double.Parse(splits[1]), double.Parse(splits[2]), double.Parse(splits[3]));
-        var rotation = OpenVRExtensions.FromRHandRotation(double.Parse(splits[4]), double.Parse(splits[5]), double.Parse(splits[6]), double.Parse(splits[7]));
-        var worldFromDriverTranslation = OpenVRExtensions.FromRHandPosition(double.Parse(splits[8]), double.Parse(splits[9]), double.Parse(splits[10]));
-        var worldFromDriverRotation = OpenVRExtensions.FromRHandRotation(double.Parse(splits[11]), double.Parse(splits[12]), double.Parse(splits[13]), double.Parse(splits[14]));
-        var driverFromHeadTranslation = OpenVRExtensions.FromRHandPosition(double.Parse(splits[15]), double.Parse(splits[16]), double.Parse(splits[17]));
-        var driverFromHeadRotation = OpenVRExtensions.FromRHandRotation(double.Parse(splits[18]), double.Parse(splits[19]), double.Parse(splits[20]), double.Parse(splits[21]));
+
+        var position = ConvertVector(devicePose.vecPosition);
+        var rotation = ConvertRotation(devicePose.qRotation);
+        var worldFromDriverTranslation = ConvertVector(devicePose.vecWorldFromDriverTranslation);
+        var worldFromDriverRotation = ConvertRotation(devicePose.qWorldFromDriverRotation);
+        var driverFromHeadTranslation = ConvertVector(devicePose.vecDriverFromHeadTranslation);
+        var driverFromHeadRotation = ConvertRotation(devicePose.qDriverFromHeadRotation);
 
         var worldFromDriverMatrix = Matrix4x4.TRS(worldFromDriverTranslation, worldFromDriverRotation, Vector3.one);
         var driverFromHeadMatrix = Matrix4x4.TRS(driverFromHeadTranslation, driverFromHeadRotation, Vector3.one);
-        var devicePose = Matrix4x4.TRS(position, rotation, Vector3.one);
-        var pose = worldFromDriverMatrix * devicePose * driverFromHeadMatrix;
+        var deviceMatrix = Matrix4x4.TRS(position, rotation, Vector3.one);
+        var pose = worldFromDriverMatrix * deviceMatrix * driverFromHeadMatrix;
         return new Pose(pose.GetPosition(), pose.GetRotation());
     }
 
