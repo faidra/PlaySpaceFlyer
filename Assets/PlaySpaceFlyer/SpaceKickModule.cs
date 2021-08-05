@@ -24,7 +24,7 @@ public sealed class SpaceKickModule : MonoBehaviour
             new PoseVisualizer.Param(
                 hasPrevDiff,
                 footTracker.Position + velocity * speedToSize * 0.5f,
-                Quaternion.LookRotation(velocity),
+                velocity.sqrMagnitude > 0 ? Quaternion.LookRotation(velocity) : Quaternion.identity,
                 new Vector3(0.1f, 0.1f, speedToSize * velocity.magnitude)));
     }
 
