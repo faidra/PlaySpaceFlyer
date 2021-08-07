@@ -20,8 +20,6 @@ public class OpenVRInitializer : MonoBehaviour
     {
         var openVRError = EVRInitError.None;
 
-        Application.targetFrameRate = 60;
-
         //OpenVRの初期化
         OpenVR.Init(ref openVRError, EVRApplicationType.VRApplication_Overlay);
         if (openVRError != EVRInitError.None)
@@ -43,8 +41,6 @@ public class OpenVRInitializer : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SteamVR_Action_Pose.SetTrackingUniverseOrigin(ETrackingUniverseOrigin.TrackingUniverseRawAndUncalibrated); // Settingsで変えるとCompositerの書き換え合戦が発生するので
-
-        Application.targetFrameRate = 5;
 
         SceneManager.LoadScene("Main");
     }
