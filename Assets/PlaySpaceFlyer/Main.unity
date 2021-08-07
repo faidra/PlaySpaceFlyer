@@ -3791,6 +3791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputEmulator: {fileID: 113409152}
   Target: {fileID: 699356162}
+  targetFrameRate: 90
 --- !u!4 &1949573851
 Transform:
   m_ObjectHideFlags: 0

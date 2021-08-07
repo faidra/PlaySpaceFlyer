@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Threading;
+using UniRx;
+using UnityEngine;
 
 public class MainController : MonoBehaviour
 {
-    [SerializeField]
-    InputEmulator InputEmulator;
-    [SerializeField]
-    Transform Target;
+    [SerializeField] InputEmulator InputEmulator;
+    [SerializeField] Transform Target;
+    [SerializeField] int targetFrameRate = 90;
 
     void LateUpdate()
     {
@@ -13,5 +14,10 @@ public class MainController : MonoBehaviour
         var position = transform.position;
         var rotation = transform.rotation;
         InputEmulator.SetAllDeviceTransform(position, rotation);
+    }
+
+    void Update()
+    {
+        Thread.Sleep(1000 / targetFrameRate);
     }
 }
