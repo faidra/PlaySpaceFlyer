@@ -80,17 +80,6 @@ public sealed class PoseReceiver : MonoBehaviour
         return new Pose(pose.GetPosition(), pose.GetRotation());
     }
 
-    bool TryGetId(string str, out uint id, out string[] splits)
-    {
-        splits = str.Split(',');
-        if (splits.Length <= 21)
-        {
-            id = default;
-            return false;
-        }
-        return uint.TryParse(splits[0], out id);
-    }
-
     bool TryGetDeviceIndex(SteamVR_Input_Sources inputSources, out uint id)
     {
         if (inputSources == SteamVR_Input_Sources.Head)
