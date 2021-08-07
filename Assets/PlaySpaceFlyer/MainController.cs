@@ -20,4 +20,13 @@ public class MainController : MonoBehaviour
     {
         Thread.Sleep(1000 / targetFrameRate);
     }
+
+    void Start()
+    {
+        Observable.IntervalFrame(100)
+            .Select(_ => Time.realtimeSinceStartup)
+            .Pairwise()
+            .Subscribe(p => Logger.Log($"FPS: {100 / (p.Current - p.Previous)}"))
+            .AddTo(this);
+    }
 }
