@@ -3,6 +3,8 @@ PlaySpaceMover( https://github.com/naelstrof/VRPlayspaceMover )のような、VR
 移動方法を変えるほか、VRChatに最適化した動作にする予定です。
 
 OpenVR-SpaceCalibrator( https://github.com/faidra/OpenVR-SpaceCalibrator ) を使用しています。
+- ビルドしたDLLを `\Assets\Plugins\OpenVR-SpaceCalibrator\OpenVR-SpaceCalibratorClient.dll` として置く
+- ビルドしたドライバーを `\Steam\steamapps\common\SteamVR\drivers\01spacecalibrator\bin\win64\driver_01spacecalibrator.dll` として置く
 
 # 説明
 メニューボタンをダブルクリックからの長押しで上下に動かすと移動 (PlaySpaceMoverのような移動量ではなく速度設定式です。方向は現状PlaySpaceMoverと逆ですが、合わせるかもしれません)
