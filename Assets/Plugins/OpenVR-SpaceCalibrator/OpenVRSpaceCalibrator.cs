@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text;
 using Valve.VR;
 
 namespace OpenVRSpaceCalibrator
@@ -8,7 +9,7 @@ namespace OpenVRSpaceCalibrator
         const string dllName = "OpenVR-SpaceCalibratorClientDLL";
 
         [DllImport(dllName)]
-        public static extern void Connect();
+        public static extern void Connect(StringBuilder error);
 
         [DllImport(dllName)]
         public static extern void ResetAndDisableDeviceTransform(uint deviceId);

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text;
 using Valve.VR;
 
 public class InputEmulator : MonoBehaviour
@@ -11,7 +13,9 @@ public class InputEmulator : MonoBehaviour
 
     void Start()
     {
-        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.Connect();
+        var er = new StringBuilder(256);
+        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.Connect(er);
+        Debug.LogError(er.ToString());
     }
 
     public void SetAllDeviceTransform(Vector3 pos, Quaternion rot)
