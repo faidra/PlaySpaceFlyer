@@ -15,7 +15,11 @@ namespace OpenVRSpaceCalibrator
         public static extern void ResetAndDisableDeviceTransform(uint deviceId);
 
         [DllImport(dllName)]
-        public static extern void SetDeviceTransform(uint deviceId, double x, double y, double z, double qx, double qy, double qz, double qw);
+        public static extern void SetDeviceTransform(
+            uint deviceId,
+            double px, double py, double pz,
+            double qx, double qy, double qz, double qw,
+            double scale);
 
         [DllImport(dllName)]
         public static extern DevicePoses GetDevicePoses();

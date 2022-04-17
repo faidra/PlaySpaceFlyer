@@ -13,7 +13,8 @@ public class MainController : MonoBehaviour
         var transform = Target.transform;
         var position = transform.position;
         var rotation = transform.rotation;
-        InputEmulator.SetAllDeviceTransform(position, rotation);
+        var scale = transform.lossyScale.x;
+        InputEmulator.SetAllDeviceTransform(position, rotation, scale);
     }
 
     void Update()

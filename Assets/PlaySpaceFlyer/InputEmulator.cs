@@ -18,12 +18,12 @@ public class InputEmulator : MonoBehaviour
         Debug.LogError(er.ToString());
     }
 
-    public void SetAllDeviceTransform(Vector3 pos, Quaternion rot)
+    public void SetAllDeviceTransform(Vector3 pos, Quaternion rot, float scale)
     {
         foreach (var id in GetAllOpenVRDeviceIds())
         {
             if (lastUpdated.TryGetValue(id, out var last) && last.pos == pos && last.rot == rot) continue;
-            SetDeviceTransform(id, pos, rot);
+            SetDeviceTransform(id, pos, rot, scale);
             lastUpdated[id] = (pos, rot);
         }
         CurrentOffset = pos;
@@ -45,11 +45,15 @@ public class InputEmulator : MonoBehaviour
         }
     }
 
-    void SetDeviceTransform(uint openVRDeviceId, Vector3 pos, Quaternion rot)
+    void SetDeviceTransform(uint openVRDeviceId, Vector3 pos, Quaternion rot, float scale)
     {
         var rpos = pos.ToRHand();
         var rrot = rot.ToRHand();
-        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.SetDeviceTransform(openVRDeviceId, rpos.x, rpos.y, rpos.z, rrot.x, rrot.y, rrot.z, rrot.w);
+        OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.SetDeviceTransform(
+            openVRDeviceId,
+            rpos.x, rpos.y, rpos.z,
+            rrot.x, rrot.y, rrot.z, rrot.w,
+            scale);
     }
 
     void DisableDeviceTransform(uint openVRDeviceId)
