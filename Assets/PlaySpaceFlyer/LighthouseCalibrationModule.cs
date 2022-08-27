@@ -2,55 +2,66 @@
 using UniRx;
 using UnityEngine.UI;
 
-public class QuestCalibrationLinearMoveModule : MonoBehaviour
+public class LighthouseCalibrationModule : MonoBehaviour
 {
-    [SerializeField] Toggle questCalibrationToggle;
+    [SerializeField] Toggle lighthouseCalibrationToggle;
     
     [SerializeField]
-    DoubleDrag Drag;
+    DoubleDrag drag;
     [SerializeField]
-    Controller Controller;
+    Controller controller;
     [SerializeField]
-    ResetEvent ResetEvent;
-    [SerializeField]
-    InputEmulator InputEmulator;
+    ResetEvent resetEvent;
 
     [SerializeField]
-    VRCMoving Moving;
-
-    [SerializeField] SwitchMove SwitchMove;
-
+    float positionSpeedMultiplier;
     [SerializeField]
-    float SpeedMultiplier;
+    float rotationSpeedMultiplier;
+
+    [SerializeField] LighthouseOffset lighthouseOffset;
 
     void Start()
     {
-        var moveOrSwitch = Moving.IsMovingAsObservable().CombineLatest(SwitchMove.IsSwitchingAsObservable(), (m, s) => m || s);
-        Drag.MoveAsObservable()
-            .Where(_ => questCalibrationToggle.isOn)
-            .WithLatestFrom(moveOrSwitch, (v, moving) => (v, moving))
-            .Subscribe(t => AddOffset(t.v, t.moving)).AddTo(this);
+        drag.MoveAsObservable()
+            .Where(_ => lighthouseCalibrationToggle.isOn)
+            .Subscribe(AddOffset).AddTo(this);
 
-        ResetEvent.OnResetAsObservable()
-            .Where(_ => questCalibrationToggle.isOn)
-            .Subscribe(_ => transform.localPosition = Vector3.zero)
+        resetEvent.OnResetAsObservable()
+            .Where(_ => lighthouseCalibrationToggle.isOn)
+            .Subscribe(_ =>
+            {
+                transform.localPosition = Vector3.zero;
+                transform.localRotation = Quaternion.identity;
+            })
             .AddTo(this);
     }
 
-    void AddOffset(Vector3 grab, bool isMoving)
+    bool isFirst;
+    void Update()
     {
-        if (Controller.ModifierPressed.Value)
+        if (isFirst)
         {
-            if (isMoving) grab.y = 0f;
-            grab = InputEmulator.CurrentRotation * grab;
+            LoadOffset();
+            isFirst = true;
+        }
+    }
+
+    void LoadOffset()
+    {
+        transform.localPosition = lighthouseOffset.CurrentOffset;
+        transform.localRotation = lighthouseOffset.CurrentRotation;
+    }
+
+    void AddOffset(Vector3 grab)
+    {
+        if (controller.ModifierPressed.Value)
+        {
+            var position = controller.Position;
+            transform.RotateAround(position, Vector3.up, grab.y * rotationSpeedMultiplier * Time.deltaTime);
         }
         else
         {
-            if (isMoving) return;
-            grab.x = 0f;
-            grab.z = 0f;
+            transform.Translate(grab * positionSpeedMultiplier * Time.deltaTime);
         }
-
-        transform.Translate(grab * SpeedMultiplier * Time.deltaTime);
     }
 }

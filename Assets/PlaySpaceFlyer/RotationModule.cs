@@ -6,7 +6,7 @@ using Valve.VR;
 
 public class RotationModule : MonoBehaviour
 {
-    [SerializeField] Toggle questCalibrationToggle;
+    [SerializeField] Toggle calibrationToggle;
 
     [SerializeField]
     Transform Target;
@@ -29,14 +29,14 @@ public class RotationModule : MonoBehaviour
     void Start()
     {
         source.MovesAsObservable()
-            .Where(_ => !questCalibrationToggle.isOn)
+            .Where(_ => !calibrationToggle.isOn)
             .Where(_ => useRotate.isOn)
             .SelectMany(move => MoveToRotateAsObservable(move))
             .Subscribe()
             .AddTo(this);
 
         ResetEvent.OnResetAsObservable()
-            .Where(_ => !questCalibrationToggle.isOn)
+            .Where(_ => !calibrationToggle.isOn)
             .Subscribe(_ =>
         {
             transform.localPosition = Vector3.zero;

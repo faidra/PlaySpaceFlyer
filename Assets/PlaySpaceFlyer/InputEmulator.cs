@@ -5,7 +5,7 @@ using Valve.VR;
 
 public class InputEmulator : MonoBehaviour
 {
-    [SerializeField] QuestOffset questOffset;
+    [SerializeField] LighthouseOffset lighthouseOffset;
 
     public Vector3 CurrentOffset { get; private set; }
     public Quaternion CurrentRotation { get; private set; } = Quaternion.identity;
@@ -20,9 +20,9 @@ public class InputEmulator : MonoBehaviour
         Debug.LogError(er.ToString());
     }
 
-    static bool IsOculusDevice(uint id)
+    static bool IsLightHouseDevice(uint id)
     {
-        return GetTrackingSystemName(id).Equals("oculus");
+        return GetTrackingSystemName(id).Equals("lighthouse") && id != OpenVR.k_unTrackedDeviceIndex_Hmd; // HMDを除くのは検証を楽にするため
     }
 
     static string GetTrackingSystemName(uint id)
@@ -70,10 +70,10 @@ public class InputEmulator : MonoBehaviour
 
     void SetDeviceTransform(uint openVRDeviceId, Vector3 pos, Quaternion rot, float scale)
     {
-        if (IsOculusDevice(openVRDeviceId))
+        if (IsLightHouseDevice(openVRDeviceId))
         {
-            rot = questOffset.CurrentRotation * rot;
-            pos = questOffset.CurrentOffset + questOffset.CurrentRotation * pos;
+            rot = lighthouseOffset.CurrentRotation * rot;
+            pos = lighthouseOffset.CurrentOffset + lighthouseOffset.CurrentRotation * pos;
             // todo scale
         }
 
@@ -97,12 +97,12 @@ public class InputEmulator : MonoBehaviour
         DisableAllDeviceTransform();
     }
 
-    public void SetQuestCalibration(Vector3 position, Quaternion rotation)
+    public void SetLighthouseOffset(Vector3 position, Quaternion rotation)
     {
-        questOffset.SetValues(position, rotation);
+        lighthouseOffset.SetValues(position, rotation);
         foreach (var id in GetAllOpenVRDeviceIds())
         {
-            if (IsOculusDevice(id))
+            if (IsLightHouseDevice(id))
             {
                 SetDeviceTransform(id, CurrentOffset, CurrentRotation, CurrentScale);
             }

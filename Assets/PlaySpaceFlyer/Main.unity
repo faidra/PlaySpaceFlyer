@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5974627b9c859af48ba0ab26fe96bcae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questOffset: {fileID: 113409154}
+  lighthouseOffset: {fileID: 113409154}
 --- !u!4 &113409153
 Transform:
   m_ObjectHideFlags: 0
@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 511155805}
   - component: {fileID: 511155806}
   m_Layer: 5
-  m_Name: QuestCalibration
+  m_Name: LighthouseCalibration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1531,7 +1531,7 @@ GameObject:
   - component: {fileID: 804314425}
   - component: {fileID: 804314424}
   m_Layer: 0
-  m_Name: QuestCalibration
+  m_Name: LighthouseCalibration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1549,9 +1549,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd55a35d6b440cda4223b86de2035c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questCalibrationToggle: {fileID: 511155806}
+  lighthouseCalibrationToggle: {fileID: 511155806}
   InputEmulator: {fileID: 113409152}
   Target: {fileID: 1480526341}
+  shortcutController: {fileID: 900804353}
+  firstAction:
+    actionPath: /actions/default/in/MainButton
+    needsReinit: 0
+  secondAction:
+    actionPath: /actions/default/in/Modifier
+    needsReinit: 0
+  graceSeconds: 0.5
+  otherController: {fileID: 718015043}
+  hmd: {fileID: 1805358344}
+  lighthouseOffset: {fileID: 113409154}
 --- !u!4 &804314425
 Transform:
   m_ObjectHideFlags: 0
@@ -2090,7 +2101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5683810b5107b745878dfd6686d1787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questCalibrationToggle: {fileID: 511155806}
+  calibrationToggle: {fileID: 511155806}
   Drag: {fileID: 718015045}
   Controller: {fileID: 718015043}
   ResetEvent: {fileID: 1256772338}
@@ -2303,7 +2314,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1094414320}
   - component: {fileID: 1094414322}
-  - component: {fileID: 1094414321}
   m_Layer: 0
   m_Name: LinearMove
   m_TagString: Untagged
@@ -2322,24 +2332,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1113939679}
+  - {fileID: 1480526341}
   m_Father: {fileID: 804314425}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1094414321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094414319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ad8681b4da24692b6da81ba138307fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RightController: {fileID: 718015043}
-  switchMoveToggle: {fileID: 1811753138}
 --- !u!114 &1094414322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2352,14 +2348,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7daeff42c59c4403922474708f2c7a43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questCalibrationToggle: {fileID: 511155806}
-  Drag: {fileID: 718015045}
-  Controller: {fileID: 718015043}
-  ResetEvent: {fileID: 1256772338}
-  InputEmulator: {fileID: 113409152}
-  Moving: {fileID: 900804357}
-  SwitchMove: {fileID: 1094414321}
-  SpeedMultiplier: 12
+  lighthouseCalibrationToggle: {fileID: 511155806}
+  drag: {fileID: 718015045}
+  controller: {fileID: 718015043}
+  resetEvent: {fileID: 1256772338}
+  positionSpeedMultiplier: 12
+  rotationSpeedMultiplier: 40
+  lighthouseOffset: {fileID: 113409154}
 --- !u!1 &1103686643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2433,78 +2428,6 @@ MonoBehaviour:
   speedParameterName: Speed
   weightSlider: {fileID: 676791492}
   speedSlider: {fileID: 82072686}
---- !u!1 &1113939678
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1113939679}
-  - component: {fileID: 1113939681}
-  - component: {fileID: 1113939680}
-  m_Layer: 0
-  m_Name: Rotate
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1113939679
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113939678}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1480526341}
-  m_Father: {fileID: 1094414320}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1113939680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113939678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a2595435f94a15933d07037b7526d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 900804353}
-  actionBoolean:
-    actionPath: /actions/default/in/Modifier
-    needsReinit: 0
-  graceSeconds: 0.25
-  poseReceiver: {fileID: 79410115}
---- !u!114 &1113939681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113939678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55f319ef8a3c468589ffc3197057e46a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questCalibrationToggle: {fileID: 511155806}
-  Target: {fileID: 1113939679}
-  source: {fileID: 1113939680}
-  BaseHeight: 1.6
-  CenterOffsetMax: 7
-  Scale: 800
-  ResetEvent: {fileID: 1256772338}
-  useRotate: {fileID: 1998022850}
-  poseReceiver: {fileID: 79410115}
 --- !u!1 &1145730725
 GameObject:
   m_ObjectHideFlags: 0
@@ -2624,7 +2547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8614c7cd21bef44856fc7355810f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questCalibrationToggle: {fileID: 511155806}
+  calibrationToggle: {fileID: 511155806}
   Target: {fileID: 1185084572}
   source: {fileID: 1185084574}
   BaseHeight: 1.6
@@ -3014,11 +2937,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480526340}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1113939679}
+  m_Father: {fileID: 1094414320}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1553360111
@@ -3359,6 +3282,7 @@ GameObject:
   - component: {fileID: 1607900521}
   - component: {fileID: 1607900523}
   - component: {fileID: 1607900522}
+  - component: {fileID: 1607900524}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -3382,8 +3306,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -65, y: -0.5}
-  m_SizeDelta: {x: 132, y: 17}
+  m_AnchoredPosition: {x: -88, y: -0.5}
+  m_SizeDelta: {x: 0, y: 17}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1607900522
 MonoBehaviour:
@@ -3417,7 +3341,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: QuestCalibration
+  m_Text: LighthouseCalibration
 --- !u!222 &1607900523
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3426,6 +3350,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607900520}
   m_CullTransparentMesh: 0
+--- !u!114 &1607900524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607900520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &1703220211
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class LinearMoveModule : MonoBehaviour
 {
-    [SerializeField] Toggle questCalibrationToggle;
+    [SerializeField] Toggle calibrationToggle;
 
     [SerializeField]
     DoubleDrag Drag;
@@ -27,12 +27,12 @@ public class LinearMoveModule : MonoBehaviour
     {
         var moveOrSwitch = Moving.IsMovingAsObservable().CombineLatest(SwitchMove.IsSwitchingAsObservable(), (m, s) => m || s);
         Drag.MoveAsObservable()
-            .Where(_ => !questCalibrationToggle.isOn)
+            .Where(_ => !calibrationToggle.isOn)
             .WithLatestFrom(moveOrSwitch, (v, moving) => (v, moving))
             .Subscribe(t => AddOffset(t.v, t.moving)).AddTo(this);
 
         ResetEvent.OnResetAsObservable()
-            .Where(_ => !questCalibrationToggle.isOn)
+            .Where(_ => !calibrationToggle.isOn)
             .Subscribe(_ => transform.localPosition = Vector3.zero)
             .AddTo(this);
     }

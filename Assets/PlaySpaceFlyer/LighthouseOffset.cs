@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public sealed class LightOffset : MonoBehaviour
+// 結局保存要らなくなってしまった
+public sealed class LighthouseOffset : MonoBehaviour
 {
     public Vector3 CurrentOffset { get; private set; }
     public Quaternion CurrentRotation { get; private set; } = Quaternion.identity;
@@ -27,9 +28,6 @@ public sealed class LightOffset : MonoBehaviour
         rotation.w = PlayerPrefs.GetFloat(GetRotationKey(3));
         CurrentOffset = offset;
         CurrentRotation = rotation;
-        
-        // todo: これだとModuleの方が初期化されたままだから、更新した瞬間死ぬ
-        // todo: 初期値をキャリブレーションに反映する
     }
 
     static string GetPositionKey(int index)
