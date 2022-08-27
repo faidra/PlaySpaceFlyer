@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Valve.VR;
 
 public class InputEmulator : MonoBehaviour
 {
+    [SerializeField] QuestOffset questOffset;
+
     public Vector3 CurrentOffset { get; private set; }
     public Quaternion CurrentRotation { get; private set; } = Quaternion.identity;
+    public float CurrentScale { get; private set; } = 1f;
 
     readonly Dictionary<uint, (Vector3 pos, Quaternion rot)> lastUpdated = new Dictionary<uint, (Vector3 pos, Quaternion rot)>();
 
@@ -16,6 +18,25 @@ public class InputEmulator : MonoBehaviour
         var er = new StringBuilder(256);
         OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.Connect(er);
         Debug.LogError(er.ToString());
+    }
+
+    static bool IsOculusDevice(uint id)
+    {
+        return GetTrackingSystemName(id).Equals("oculus");
+    }
+
+    static string GetTrackingSystemName(uint id)
+    {
+        var error = ETrackedPropertyError.TrackedProp_Success;
+        var capacity = OpenVR.System.GetStringTrackedDeviceProperty(id, ETrackedDeviceProperty.Prop_TrackingSystemName_String, null, 0, ref error);
+        if (capacity <= 1)
+        {
+            return "";
+        }
+
+        var buffer = new StringBuilder((int) capacity);
+        OpenVR.System.GetStringTrackedDeviceProperty(id, ETrackedDeviceProperty.Prop_TrackingSystemName_String, buffer, capacity, ref error);
+        return buffer.ToString();
     }
 
     public void SetAllDeviceTransform(Vector3 pos, Quaternion rot, float scale)
@@ -28,6 +49,7 @@ public class InputEmulator : MonoBehaviour
         }
         CurrentOffset = pos;
         CurrentRotation = rot;
+        CurrentScale = scale;
     }
 
     public void DisableAllDeviceTransform()
@@ -35,6 +57,7 @@ public class InputEmulator : MonoBehaviour
         foreach (var id in GetAllOpenVRDeviceIds()) DisableDeviceTransform(id);
         CurrentOffset = Vector3.zero;
         CurrentRotation = Quaternion.identity;
+        CurrentScale = 1f;
     }
 
     IEnumerable<uint> GetAllOpenVRDeviceIds()
@@ -47,6 +70,13 @@ public class InputEmulator : MonoBehaviour
 
     void SetDeviceTransform(uint openVRDeviceId, Vector3 pos, Quaternion rot, float scale)
     {
+        if (IsOculusDevice(openVRDeviceId))
+        {
+            rot = questOffset.CurrentRotation * rot;
+            pos = questOffset.CurrentOffset + questOffset.CurrentRotation * pos;
+            // todo scale
+        }
+
         var rpos = pos.ToRHand();
         var rrot = rot.ToRHand();
         OpenVRSpaceCalibrator.OpenVRSpaceCalibrator.SetDeviceTransform(
@@ -65,5 +95,17 @@ public class InputEmulator : MonoBehaviour
     {
         if (OpenVR.System == null) return;
         DisableAllDeviceTransform();
+    }
+
+    public void SetQuestCalibration(Vector3 position, Quaternion rotation)
+    {
+        questOffset.SetValues(position, rotation);
+        foreach (var id in GetAllOpenVRDeviceIds())
+        {
+            if (IsOculusDevice(id))
+            {
+                SetDeviceTransform(id, CurrentOffset, CurrentRotation, CurrentScale);
+            }
+        }
     }
 }
