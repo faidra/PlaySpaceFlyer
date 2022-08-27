@@ -44,8 +44,7 @@ public class LighthouseCalibrationController : MonoBehaviour
         var rotationOffset = forward * Quaternion.Inverse(currentRotation);
         var currentPosition = rotationOffset * Vector3.Lerp(shortcutController.Position, otherController.Position, 0.5f);
         var positionOffset = targetPosition - currentPosition;
-        calibrationModule.transform.localPosition = positionOffset;
-        calibrationModule.transform.localRotation = rotationOffset;
+        calibrationModule.Set(positionOffset, rotationOffset);
         InputEmulator.SetLighthouseOffset(positionOffset, rotationOffset);
     }
 

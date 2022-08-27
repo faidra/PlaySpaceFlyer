@@ -2317,7 +2317,7 @@ GameObject:
   - component: {fileID: 1094414320}
   - component: {fileID: 1094414322}
   m_Layer: 0
-  m_Name: LinearMove
+  m_Name: LighthouseCalibrationModule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -23,11 +23,15 @@ public sealed class PoseVisualizer : MonoBehaviour
 
     public static PoseVisualizer Create(MonoBehaviour source, Func<Param> func)
     {
+#if UNITY_EDITOR
         var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.name = source.name;
         var i = go.AddComponent<PoseVisualizer>();
         i.Initialize(source, func);
         return i;
+#else
+        ruturn null;
+#endif
     }
 
     MonoBehaviour source;

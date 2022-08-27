@@ -20,36 +20,48 @@ public class LighthouseCalibrationModule : MonoBehaviour
 
     [SerializeField] LighthouseOffset lighthouseOffset;
 
+    bool prev;
+    Vector3 prevPos;
+    Quaternion prevRot;
+
     void Start()
     {
-        drag.MoveAsObservable()
-            .Where(_ => lighthouseCalibrationToggle.isOn)
-            .Subscribe(AddOffset).AddTo(this);
-
         resetEvent.OnResetAsObservable()
             .Where(_ => lighthouseCalibrationToggle.isOn)
-            .Subscribe(_ =>
-            {
-                transform.localPosition = Vector3.zero;
-                transform.localRotation = Quaternion.identity;
-            })
+            .Subscribe(_ => Set(Vector3.zero, Quaternion.identity))
             .AddTo(this);
     }
 
-    bool isFirst;
     void Update()
     {
-        if (isFirst)
+        var v = lighthouseCalibrationToggle.isOn && controller.MainButtonPressed.Value;
+        if (v)
         {
-            LoadOffset();
-            isFirst = true;
+            var pos = controller.Position;
+            var rot = controller.Rotation;
+            if (prev)
+            {
+                var offset = pos - prevPos;
+                var offsetRot = Quaternion.Inverse(prevRot) * rot;
+                offsetRot = Quaternion.Euler(0f, offsetRot.eulerAngles.y, 0f);
+                transform.localPosition += offset;
+                transform.localRotation *= offsetRot;
+            }
+
+            prevPos = pos;
+            prevRot = rot;
+            prev = true;
+        }
+        else
+        {
+            prev = false;
         }
     }
 
-    void LoadOffset()
+    public void Set(Vector3 pos, Quaternion rot)
     {
-        transform.localPosition = lighthouseOffset.CurrentOffset;
-        transform.localRotation = lighthouseOffset.CurrentRotation;
+        transform.localPosition = pos;
+        transform.localRotation = rot;
     }
 
     void AddOffset(Vector3 grab)
