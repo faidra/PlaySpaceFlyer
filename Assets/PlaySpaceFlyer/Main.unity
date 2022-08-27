@@ -1559,10 +1559,12 @@ MonoBehaviour:
   secondAction:
     actionPath: /actions/default/in/Modifier
     needsReinit: 0
-  graceSeconds: 0.5
+  graceSeconds: 1
+  defaultCalibrationOffset: {x: 0, y: -0.1, z: 0.5}
   otherController: {fileID: 718015043}
   hmd: {fileID: 1805358344}
   lighthouseOffset: {fileID: 113409154}
+  calibrationModule: {fileID: 1094414322}
 --- !u!4 &804314425
 Transform:
   m_ObjectHideFlags: 0

@@ -14,15 +14,19 @@ public class LighthouseCalibrationController : MonoBehaviour
     [SerializeField] SteamVR_Action_Boolean firstAction;
     [SerializeField] SteamVR_Action_Boolean secondAction;
     [SerializeField] float graceSeconds;
+    [SerializeField] Vector3 defaultCalibrationOffset;
 
     [SerializeField] Controller otherController;
     [SerializeField] HMD hmd;
     [SerializeField] LighthouseOffset lighthouseOffset;
 
+    [SerializeField] LighthouseCalibrationModule calibrationModule;
+
     void Start()
     {
         shortcutController.InputSources.GetDoublePressAsObservable(firstAction, graceSeconds)
             .Select(d => d ? shortcutController.InputSources.GetDoublePressAsObservable(secondAction, graceSeconds).Where(d2 => d2).AsUnitObservable() : Observable.Empty<Unit>())
+            .Switch()
             .Subscribe(_ => lighthouseCalibrationToggle.isOn = !lighthouseCalibrationToggle.isOn)
             .AddTo(this);
 
@@ -34,12 +38,20 @@ public class LighthouseCalibrationController : MonoBehaviour
 
     void InitializePosition()
     {
-        var targetPosition = hmd.Position + hmd.Rotation * (0.5f * Vector3.forward);
-        var currentRotation = Quaternion.Slerp(shortcutController.Rotation, otherController.Rotation, 0.5f);
-        var rotationOffset = Quaternion.Euler(0f, (Quaternion.Inverse(currentRotation) * hmd.Rotation).eulerAngles.y, 0f);
+        var forward = AsY(hmd.Rotation);
+        var targetPosition = hmd.Position + forward * defaultCalibrationOffset;
+        var currentRotation = AsY(Quaternion.Slerp(shortcutController.Rotation, otherController.Rotation, 0.5f));
+        var rotationOffset = forward * Quaternion.Inverse(currentRotation);
         var currentPosition = rotationOffset * Vector3.Lerp(shortcutController.Position, otherController.Position, 0.5f);
         var positionOffset = targetPosition - currentPosition;
-        lighthouseOffset.SetValues(positionOffset, rotationOffset);
+        calibrationModule.transform.localPosition = positionOffset;
+        calibrationModule.transform.localRotation = rotationOffset;
+        InputEmulator.SetLighthouseOffset(positionOffset, rotationOffset);
+    }
+
+    static Quaternion AsY(Quaternion q)
+    {
+        return Quaternion.Euler(0f, q.eulerAngles.y, 0f);
     }
 
     void LateUpdate()
