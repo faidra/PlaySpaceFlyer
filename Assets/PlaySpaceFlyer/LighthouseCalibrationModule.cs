@@ -7,18 +7,17 @@ public class LighthouseCalibrationModule : MonoBehaviour
     [SerializeField] Toggle lighthouseCalibrationToggle;
     
     [SerializeField]
-    DoubleDrag drag;
-    [SerializeField]
     Controller controller;
     [SerializeField]
     ResetEvent resetEvent;
 
-    [SerializeField]
-    float positionSpeedMultiplier;
-    [SerializeField]
-    float rotationSpeedMultiplier;
+    [SerializeField] Vector3 defaultCalibrationOffset;
 
-    [SerializeField] LighthouseOffset lighthouseOffset;
+    [SerializeField] Controller otherController;
+    [SerializeField] HMD hmd;
+
+    [SerializeField] Vector3 controllerForward;
+    [SerializeField] float rotationMultiplier;
 
     bool prev;
     Vector3 prevPos;
@@ -28,7 +27,7 @@ public class LighthouseCalibrationModule : MonoBehaviour
     {
         resetEvent.OnResetAsObservable()
             .Where(_ => lighthouseCalibrationToggle.isOn)
-            .Subscribe(_ => Set(Vector3.zero, Quaternion.identity))
+            .Subscribe(_ => InitializePosition())
             .AddTo(this);
     }
 
@@ -39,13 +38,18 @@ public class LighthouseCalibrationModule : MonoBehaviour
         {
             var pos = controller.Position;
             var rot = controller.Rotation;
+            var transform = this.transform;
             if (prev)
             {
                 var offset = pos - prevPos;
-                var offsetRot = Quaternion.Inverse(prevRot) * rot;
+                var offsetRot = rot * Quaternion.Inverse(prevRot);
                 offsetRot = Quaternion.Euler(0f, offsetRot.eulerAngles.y, 0f);
-                transform.localPosition += offset;
-                transform.localRotation *= offsetRot;
+                var rotate = Quaternion.Slerp(Quaternion.identity, offsetRot, rotationMultiplier);
+                var crot = transform.localRotation;
+                var cpos = transform.localPosition;
+                var center = cpos + pos;
+                transform.localRotation = crot * rotate;
+                transform.localPosition = cpos -(rotate * center - center) + offset;
             }
 
             prevPos = pos;
@@ -58,22 +62,28 @@ public class LighthouseCalibrationModule : MonoBehaviour
         }
     }
 
-    public void Set(Vector3 pos, Quaternion rot)
+    void Set(Vector3 pos, Quaternion rot)
     {
         transform.localPosition = pos;
         transform.localRotation = rot;
     }
-
-    void AddOffset(Vector3 grab)
+    
+    void InitializePosition()
     {
-        if (controller.ModifierPressed.Value)
-        {
-            var position = controller.Position;
-            transform.RotateAround(position, Vector3.up, grab.y * rotationSpeedMultiplier * Time.deltaTime);
-        }
-        else
-        {
-            transform.Translate(grab * positionSpeedMultiplier * Time.deltaTime);
-        }
+        var forward = AsY(hmd.Rotation);
+        var targetPosition = hmd.Position + forward * defaultCalibrationOffset;
+        var rightForward = controller.Rotation * controllerForward;
+        var leftForward = otherController.Rotation * controllerForward;
+        var currentForward = Vector3.Lerp(rightForward, leftForward, 0.5f);
+        var currentRotation = AsY(Quaternion.LookRotation(currentForward));
+        var rotationOffset = forward * Quaternion.Inverse(currentRotation);
+        var currentPosition = rotationOffset * Vector3.Lerp(controller.Position, otherController.Position, 0.5f);
+        var positionOffset = Quaternion.Inverse(rotationOffset) * (targetPosition - currentPosition);
+        Set(positionOffset, rotationOffset);
+    }
+
+    static Quaternion AsY(Quaternion q)
+    {
+        return Quaternion.Euler(0f, q.eulerAngles.y, 0f);
     }
 }

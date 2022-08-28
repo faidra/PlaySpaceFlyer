@@ -28,20 +28,26 @@ public class RotationModule : MonoBehaviour
 
     void Start()
     {
+        var disable = calibrationToggle.OnValueChangedAsObservable().Where(isOn => isOn);
         source.MovesAsObservable()
-            .Where(_ => !calibrationToggle.isOn)
             .Where(_ => useRotate.isOn)
             .SelectMany(move => MoveToRotateAsObservable(move))
+            .TakeUntil(disable)
             .Subscribe()
             .AddTo(this);
 
         ResetEvent.OnResetAsObservable()
-            .Where(_ => !calibrationToggle.isOn)
-            .Subscribe(_ =>
-        {
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-        }).AddTo(this);
+            .TakeUntil(disable)
+            .Subscribe(_ => ResetValues())
+            .AddTo(this);
+
+        disable.First().Subscribe(_ => ResetValues()).AddTo(this);
+    }
+
+    void ResetValues()
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 
     IObservable<Unit> MoveToRotateAsObservable(IObservable<Vector3> move)

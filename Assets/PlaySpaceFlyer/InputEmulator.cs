@@ -72,8 +72,8 @@ public class InputEmulator : MonoBehaviour
     {
         if (IsLightHouseDevice(openVRDeviceId))
         {
-            rot = lighthouseOffset.CurrentRotation * rot;
-            pos = lighthouseOffset.CurrentOffset + lighthouseOffset.CurrentRotation * pos;
+            rot = rot * lighthouseOffset.CurrentRotation;
+            pos = pos + lighthouseOffset.CurrentRotation * lighthouseOffset.CurrentOffset;
             // todo scale
         }
 

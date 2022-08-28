@@ -1560,11 +1560,6 @@ MonoBehaviour:
     actionPath: /actions/default/in/Modifier
     needsReinit: 0
   graceSeconds: 1
-  defaultCalibrationOffset: {x: 0, y: -0.1, z: 0.5}
-  otherController: {fileID: 718015043}
-  hmd: {fileID: 1805358344}
-  lighthouseOffset: {fileID: 113409154}
-  calibrationModule: {fileID: 1094414322}
 --- !u!4 &804314425
 Transform:
   m_ObjectHideFlags: 0
@@ -2351,12 +2346,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lighthouseCalibrationToggle: {fileID: 511155806}
-  drag: {fileID: 718015045}
   controller: {fileID: 718015043}
   resetEvent: {fileID: 1256772338}
-  positionSpeedMultiplier: 12
-  rotationSpeedMultiplier: 40
-  lighthouseOffset: {fileID: 113409154}
+  defaultCalibrationOffset: {x: 0, y: -0.1, z: 0.5}
+  otherController: {fileID: 900804353}
+  hmd: {fileID: 1805358344}
+  controllerForward: {x: 0, y: -1, z: 0}
+  rotationMultiplier: 0.2
 --- !u!1 &1103686643
 GameObject:
   m_ObjectHideFlags: 0
